@@ -36,6 +36,11 @@ class MainActivity : AppCompatActivity(), MoonFragment.OnGetMoonInfo, SunFragmen
     private val clockTimer = Timer()
     private var refreshTimer = Timer()
 
+    override fun onResume() {
+        super.onResume()
+        setupAstroCalculator()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -48,6 +53,8 @@ class MainActivity : AppCompatActivity(), MoonFragment.OnGetMoonInfo, SunFragmen
         }
         setupAstroCalculator()
         with(toolbar) {
+            latuitude_textView.text = sharedPreferences.getString("latitude", "0")
+            longitude_textView.text = sharedPreferences.getString("longitude", "0")
             latuitude_textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.toolbarTextsize))
             longitude_textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.toolbarTextsize))
             time_textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.toolbarTextsize))
