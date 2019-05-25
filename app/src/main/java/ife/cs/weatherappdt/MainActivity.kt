@@ -3,6 +3,7 @@ package ife.cs.weatherappdt
 // woda niezagazowana
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.util.Log
@@ -29,7 +30,7 @@ class MainActivity : AppCompatActivity(), MoonFragment.OnGetMoonInfo, SunFragmen
     private lateinit var astroCalculator: AstroCalculator
 
     private lateinit var moonFragment: MoonFragment
-    private val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+    private lateinit var sharedPreferences: SharedPreferences
 
     private val clockTimer = Timer()
     private var refreshTimer = Timer()
@@ -37,6 +38,7 @@ class MainActivity : AppCompatActivity(), MoonFragment.OnGetMoonInfo, SunFragmen
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         setupAstroCalculator()
         setSupportActionBar(toolbar as Toolbar)
 
