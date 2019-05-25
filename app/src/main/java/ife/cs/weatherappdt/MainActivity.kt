@@ -81,6 +81,10 @@ class MainActivity : AppCompatActivity(), MoonFragment.OnGetMoonInfo, SunFragmen
 
         clockTimer.scheduleAtFixedRate(UpdateClockTask(), 1000L, 1000L)
         refreshTimer.scheduleAtFixedRate(UpdateInfoTask(),10000L,(sharedPreferences.getInt("refresh_time", 1) * 60 * 1000).toLong())
+
+        weatherButton?.setOnClickListener{
+            startActivity(Intent(this@MainActivity, WeatherActivity::class.java))
+        }
     }
 
     private fun setupAstroCalculator() {
