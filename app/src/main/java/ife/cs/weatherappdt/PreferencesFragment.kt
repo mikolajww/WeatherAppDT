@@ -16,8 +16,8 @@ class PreferencesFragment: PreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences, rootKey)
-        findPreference<EditTextPreference>("latitude")!!.setOnBindEditTextListener { NumericEditTextListener() }
-        findPreference<EditTextPreference>("longitude")!!.setOnBindEditTextListener { NumericEditTextListener() }
+        findPreference<EditTextPreference>("latitude")!!.onBindEditTextListener = NumericEditTextListener()
+        findPreference<EditTextPreference>("longitude")!!.onBindEditTextListener = NumericEditTextListener()
 
         with(findPreference<SeekBarPreference>("refresh_time")!!) {
             max = 100
