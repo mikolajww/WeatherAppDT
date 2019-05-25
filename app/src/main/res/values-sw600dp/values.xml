@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="textsize">20sp</dimen>
+    <dimen name="toolbarTextsize">24sp</dimen>
+    <dimen name="preferencesTextSize">20sp</dimen>
+</resources>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        app:key="position_category"
+        app:title="Geographical Position">
+
+        <EditTextPreference
+            app:useSimpleSummaryProvider="true"
+            app:key="latitude"
+            android:textSize="@dimen/textsize"
+            app:title="Latitude"/>
+
+        <EditTextPreference
+            app:useSimpleSummaryProvider="true"
+            android:textSize="@dimen/textsize"
+            app:key="longitude"
+            app:title="Longitude"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:key="general_category"
+        app:title="General Settings">
+
+        <SeekBarPreference
+            app:key="refresh_time"
+            app:title="Update Every"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

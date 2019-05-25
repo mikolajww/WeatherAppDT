@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_night_sky"
+    android:orientation="vertical"
+    tools:context=".SunFragment">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:contentDescription="moon"
+        android:src="@drawable/moon" />
+
+    <TextView
+        android:id="@+id/moonrise_time"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textColor="#CFEBF1"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/moonset_time"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textColor="#CFEBF1"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/new_moon"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textColor="#CFEBF1"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/full_moon"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textColor="#CFEBF1"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/moon_phase"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textColor="#CFEBF1"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/synodic_month"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textColor="#CFEBF1"
+        android:textSize="14sp" />
+</LinearLayout>
