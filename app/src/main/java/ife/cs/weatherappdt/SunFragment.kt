@@ -43,11 +43,11 @@ class SunFragment : Fragment() {
         }
         sunInfo = listener.getSunInfo()
         sunrise_time.text = "Sunrise time: + ${(if (isLandscape()) "\n" else " ")} + ${sunInfo.sunrise}()"
-        moonset_time.text = "Sunrise azimuth: + ${(if (isLandscape()) "\n" else " ")} + ${sunInfo.azimuthRise}()"
-        new_moon.text = "Sunset time: + ${(if (isLandscape()) "\n" else " ")} + ${sunInfo.sunset}()"
-        full_moon.text = "Sunset azimuth: + ${(if (isLandscape()) "\n" else " ")} + ${sunInfo.azimuthSet}()"
-        moon_phase.text = "Civil dawn time: + ${(if (isLandscape()) "\n" else " ")} + ${sunInfo.twilightMorning}"
-        synodic_month.text = "Civil dusk time: + ${(if (isLandscape()) "\n" else " ")} + ${sunInfo.twilightEvening}"
+        sunrise_azimuth.text = "Sunrise azimuth: + ${(if (isLandscape()) "\n" else " ")} + ${sunInfo.azimuthRise}()"
+        sunset_time.text = "Sunset time: + ${(if (isLandscape()) "\n" else " ")} + ${sunInfo.sunset}()"
+        sunset_azimuth.text = "Sunset azimuth: + ${(if (isLandscape()) "\n" else " ")} + ${sunInfo.azimuthSet}()"
+        civil_dawn.text = "Civil dawn time: + ${(if (isLandscape()) "\n" else " ")} + ${sunInfo.twilightMorning}"
+        civil_dusk.text = "Civil dusk time: + ${(if (isLandscape()) "\n" else " ")} + ${sunInfo.twilightEvening}"
     }
 
     private fun getAllTextViews(): List<TextView> {
