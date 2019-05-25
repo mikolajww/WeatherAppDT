@@ -1,5 +1,7 @@
 package ife.cs.weatherappdt
 
+// woda niezagazowana
+
 import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager
