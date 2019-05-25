@@ -18,6 +18,7 @@ import com.astrocalculator.AstroCalculator
 import com.astrocalculator.AstroDateTime
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.view.*
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -51,6 +52,7 @@ class MainActivity : AppCompatActivity(), MoonFragment.OnGetMoonInfo, SunFragmen
                 startActivity(Intent(this@MainActivity, PreferencesActivity::class.java))
             }
         }
+        isOnline()
         setupAstroCalculator()
         with(toolbar) {
             latuitude_textView.text = sharedPreferences.getString("latitude", "0")
@@ -160,5 +162,21 @@ class MainActivity : AppCompatActivity(), MoonFragment.OnGetMoonInfo, SunFragmen
                 }
             }
         }
+    }
+
+    private fun isOnline(): Boolean {
+        val runtime = Runtime.getRuntime()
+        try {
+            val ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8")
+            val exitValue = ipProcess.waitFor()
+            println("Connected to the internet")
+            return exitValue == 0
+        } catch (e: IOException) {
+            e.printStackTrace()
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
+        }
+        println("Unable to connect to the internet")
+        return false
     }
 }
