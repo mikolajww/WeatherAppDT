@@ -7,6 +7,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.util.Log
+import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -39,7 +40,18 @@ class MainActivity : AppCompatActivity(), MoonFragment.OnGetMoonInfo, SunFragmen
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        with(sharedPreferences) {
+            if(getString("latitude", "0")!!.equals("0", ignoreCase = true) or
+               getString("longitude", "0")!!.equals("0", ignoreCase = true)) {
+                startActivity(Intent(this@MainActivity, PreferencesActivity::class.java))
+            }
+        }
         setupAstroCalculator()
+        with(toolbar) {
+            latuitude_textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.toolbarTextsize))
+            longitude_textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.toolbarTextsize))
+            time_textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.toolbarTextsize))
+        }
         setSupportActionBar(toolbar as Toolbar)
 
         if(viewPager == null) {
@@ -59,7 +71,7 @@ class MainActivity : AppCompatActivity(), MoonFragment.OnGetMoonInfo, SunFragmen
         }
 
         clockTimer.scheduleAtFixedRate(UpdateClockTask(), 1000L, 1000L)
-        refreshTimer.scheduleAtFixedRate(UpdateInfoTask(),1000L,(sharedPreferences.getInt("refresh_time", 1) * 60 * 1000).toLong())
+        refreshTimer.scheduleAtFixedRate(UpdateInfoTask(),10000L,(sharedPreferences.getInt("refresh_time", 1) * 60 * 1000).toLong())
     }
 
     private fun setupAstroCalculator() {
@@ -132,8 +144,13 @@ class MainActivity : AppCompatActivity(), MoonFragment.OnGetMoonInfo, SunFragmen
     inner class UpdateInfoTask: TimerTask() {
         override fun run() {
             runOnUiThread{
-                sunFragment.displaySunInfo()
-                moonFragment.displayMoonInfo()
+                if(viewPager == null) {
+                    sunFragment.displaySunInfo()
+                    moonFragment.displayMoonInfo()
+                }
+                else {
+                    viewPager.adapter?.notifyDataSetChanged()
+                }
             }
         }
     }

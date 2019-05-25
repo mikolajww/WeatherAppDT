@@ -43,12 +43,12 @@ class MoonFragment : Fragment() {
             tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, resources.getDimension(R.dimen.textsize))
         }
         moonInfo = listener.getMoonInfo()
-        moonrise_time.text = "Moonrise time: + ${(if (isLandscape()) "\n" else " ")} + ${moonInfo.moonrise}()"
-        moonset_time.text = "Moonset time: + ${(if (isLandscape()) "\n" else " ")} + ${moonInfo.moonset}()"
-        new_moon.text = "Moonrise time: + ${(if (isLandscape()) "\n" else " ")} + ${moonInfo.nextNewMoon}()"
-        full_moon.text = "Moonrise time: + ${(if (isLandscape()) "\n" else " ")} + ${moonInfo.nextFullMoon}()"
-        moon_phase.text = "Moonrise time: + ${(if (isLandscape()) "\n" else " ")} + ${moonInfo.illumination}"
-        synodic_month.text = "Moonrise time: + ${(if (isLandscape()) "\n" else " ")} + ${moonInfo.age.format(2)}"
+        moonrise_time.text = "Moonrise time:${(if (isLandscape()) "\n" else " ")}${moonInfo.moonrise}"
+        moonset_time.text = "Moonset time:${(if (isLandscape()) "\n" else " ")}${moonInfo.moonset}"
+        new_moon.text = "Moonrise time:${(if (isLandscape()) "\n" else " ")}${moonInfo.nextNewMoon}"
+        full_moon.text = "Moonrise time:${(if (isLandscape()) "\n" else " ")}${moonInfo.nextFullMoon}"
+        moon_phase.text = "Moonrise time:${(if (isLandscape()) "\n" else " ")}${moonInfo.illumination}"
+        synodic_month.text = "Moonrise time:${(if (isLandscape()) "\n" else " ")}${moonInfo.age.format(2)}"
     }
 
     private fun getAllTextViews(): List<TextView> {

@@ -24,7 +24,7 @@ class PreferencesFragment: PreferenceFragmentCompat() {
             min = 1
             summary = "$value + minutes"
             onPreferenceChangeListener = Preference.OnPreferenceChangeListener { preference, newValue ->
-                preference.setSummary("$newValue + minutes")
+                preference.summary = "$newValue minutes"
                 true
             }
         }
@@ -33,8 +33,7 @@ class PreferencesFragment: PreferenceFragmentCompat() {
 
     private inner class NumericEditTextListener : EditTextPreference.OnBindEditTextListener {
         override fun onBindEditText(editText: EditText) {
-            editText.inputType =
-                InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL or InputType.TYPE_NUMBER_FLAG_SIGNED
+            editText.inputType = (InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL or InputType.TYPE_NUMBER_FLAG_SIGNED)
             editText.filters = arrayOf<InputFilter>(CustomRangeInputFilter(-180.0, 180.0, activity as Context))
         }
     }
