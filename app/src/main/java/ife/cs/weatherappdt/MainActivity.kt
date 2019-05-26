@@ -10,6 +10,7 @@ import android.util.Log
 import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
@@ -182,6 +183,7 @@ class MainActivity : AppCompatActivity(), MoonFragment.OnGetMoonInfo, SunFragmen
             val ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8")
             val exitValue = ipProcess.waitFor()
             println("Connected to the internet")
+            Toast.makeText(this, "Connected to the internet", Toast.LENGTH_LONG).show()
             return exitValue == 0
         } catch (e: IOException) {
             e.printStackTrace()
@@ -189,6 +191,7 @@ class MainActivity : AppCompatActivity(), MoonFragment.OnGetMoonInfo, SunFragmen
             e.printStackTrace()
         }
         println("Unable to connect to the internet")
+        Toast.makeText(this, "Unable to connect to the internet", Toast.LENGTH_LONG).show()
         return false
     }
 }
