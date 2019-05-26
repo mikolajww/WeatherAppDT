@@ -31,11 +31,7 @@ class TestWeatherActivity : AppCompatActivity() {
         }
 
         button3.setOnClickListener{
-            /*for (member in jsonObject) {
-                println("$member, ${jsonObject.get(member as String)}")
-            }*/
 
-            println(weatherResponseObject)
         }
     }
 
@@ -54,6 +50,7 @@ class TestWeatherActivity : AppCompatActivity() {
                 jsonObject = parser.parse(StringBuilder(body)) as JsonObject
                 println(jsonObject)*/
                 weatherResponseObject = Klaxon().parse<WeatherResponse>(body)
+                println(weatherResponseObject)
             }
             override fun onFailure(call: Call, e: IOException) {
                 println("Failed to fetch JSON")
@@ -72,6 +69,7 @@ class TestWeatherActivity : AppCompatActivity() {
                 val body = response.body()!!.string()
                 println(body)
                 forecastResponseObject = Klaxon().parse<ForecastResponse>(body)
+                println(forecastResponseObject)
             }
             override fun onFailure(call: Call, e: IOException) {
                 println("Failed to fetch JSON")

@@ -1,6 +1,7 @@
 package ife.cs.weatherappdt.responses
 
 import com.beust.klaxon.Json
+import java.math.BigInteger
 
 data class ForecastResponse(
     val city: City?,
@@ -25,7 +26,7 @@ data class ForecastResponse(
 
     data class X(
         val clouds: Clouds?,
-        val dt: Int?, // 1559314800
+        val dt: BigInteger?, // 1559314800
         val dt_txt: String?, // 2019-05-31 15:00:00
         val main: Main?,
         val rain: Rain?,
@@ -35,11 +36,11 @@ data class ForecastResponse(
     ) {
         data class Main(
             val grnd_level: Double?, // 1007.28
-            val humidity: Int?, // 91
+            val humidity: Double?, // 91
             val pressure: Double?, // 1019.86
             val sea_level: Double?, // 1019.86
             val temp: Double?, // 282.7
-            val temp_kf: Int?, // 0
+            val temp_kf: Double?, // 0
             val temp_max: Double?, // 282.7
             val temp_min: Double? // 282.7
         )
@@ -47,12 +48,12 @@ data class ForecastResponse(
         data class Weather(
             val description: String?, // light rain
             val icon: String?, // 10d
-            val id: Int?, // 500
+            val id: Double?, // 500
             val main: String? // Rain
         )
 
         data class Clouds(
-            val all: Int? // 100
+            val all: Double? // 100
         )
 
         data class Rain(
