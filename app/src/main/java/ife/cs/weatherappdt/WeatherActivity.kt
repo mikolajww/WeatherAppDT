@@ -1,5 +1,6 @@
 package ife.cs.weatherappdt
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_weather.*
@@ -25,10 +26,15 @@ class WeatherActivity : AppCompatActivity() {
         client.newCall(request).enqueue(object: Callback {
 
             override fun onResponse(call: Call, response: Response) {
-                val body = response?.body()?.string()
+                val body = response.body()?.string()
                 println(body)
+                val filename = "myfile"
+                openFileOutput(filename, Context.MODE_PRIVATE).use {
+                    if (body != null) {
+                        it.write(body.toByteArray())
+                    }
+                }
             }
-
             override fun onFailure(call: Call, e: IOException) {
                 println("Failed to fetch JSON")
             }
