@@ -3,11 +3,21 @@ package ife.cs.weatherappdt
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.beust.klaxon.Json
+import com.beust.klaxon.JsonObject
+import com.beust.klaxon.Klaxon
+import com.beust.klaxon.Parser
+import ife.cs.weatherappdt.responses.ForecastResponse
+import ife.cs.weatherappdt.responses.WeatherResponse
 import kotlinx.android.synthetic.main.activity_test_weather.*
 import okhttp3.*
 import java.io.IOException
 
 class TestWeatherActivity : AppCompatActivity() {
+
+    var jsonObject:JsonObject = JsonObject()
+    var weatherResponseObject:WeatherResponse? = null
+    var forecastResponseObject:ForecastResponse? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,6 +30,14 @@ class TestWeatherActivity : AppCompatActivity() {
         button2.setOnClickListener{
             fetch5DayForecastJson()
         }
+
+        button3.setOnClickListener{
+            /*for (member in jsonObject) {
+                println("$member, ${jsonObject.get(member as String)}")
+            }*/
+
+            println(weatherResponseObject)
+        }
     }
 
     fun fetchCurrentWeatherJson() {
@@ -30,14 +48,13 @@ class TestWeatherActivity : AppCompatActivity() {
         client.newCall(request).enqueue(object: Callback {
 
             override fun onResponse(call: Call, response: Response) {
-                val body = response.body()?.string()
+                val body = response.body()!!.string()
                 println(body)
-                val filename = "myfile"
-                openFileOutput(filename, Context.MODE_PRIVATE).use {
-                    if (body != null) {
-                        it.write(body.toByteArray())
-                    }
-                }
+                /*
+                val parser = Parser.default()
+                jsonObject = parser.parse(StringBuilder(body)) as JsonObject
+                println(jsonObject)*/
+                weatherResponseObject = Klaxon().parse<WeatherResponse>(body)
             }
             override fun onFailure(call: Call, e: IOException) {
                 println("Failed to fetch JSON")
@@ -53,14 +70,9 @@ class TestWeatherActivity : AppCompatActivity() {
         client.newCall(request).enqueue(object: Callback {
 
             override fun onResponse(call: Call, response: Response) {
-                val body = response.body()?.string()
+                val body = response.body()!!.string()
                 println(body)
-                val filename = "myfile"
-                openFileOutput(filename, Context.MODE_PRIVATE).use {
-                    if (body != null) {
-                        it.write(body.toByteArray())
-                    }
-                }
+                forecastResponseObject = Klaxon().parse<ForecastResponse>(body)
             }
             override fun onFailure(call: Call, e: IOException) {
                 println("Failed to fetch JSON")
@@ -68,3 +80,10 @@ class TestWeatherActivity : AppCompatActivity() {
         })
     }
 }
+
+/*val filename = "myfile"
+openFileOutput(filename, Context.MODE_PRIVATE).use {
+    if (body != null) {
+        it.write(body.toByteArray())
+    }
+}*/

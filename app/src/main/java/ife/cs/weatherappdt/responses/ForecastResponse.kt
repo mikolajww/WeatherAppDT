@@ -1,5 +1,7 @@
 package ife.cs.weatherappdt.responses
 
+import com.beust.klaxon.Json
+
 data class ForecastResponse(
     val city: City,
     val cnt: Int, // 40
@@ -54,7 +56,8 @@ data class ForecastResponse(
         )
 
         data class Rain(
-            val threeh: Double // 1.812
+            @Json(name = "3h")
+            val three_h: Double // 1.812
         )
 
         data class Sys(

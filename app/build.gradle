@@ -37,4 +37,7 @@ dependencies {
 
     // okhttp rest api lib
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+
+    // klaxon JSON parsing lib
+    implementation 'com.beust:klaxon:5.0.1'
 }
