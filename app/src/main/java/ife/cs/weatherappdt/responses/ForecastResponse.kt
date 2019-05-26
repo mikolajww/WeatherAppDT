@@ -26,10 +26,11 @@ data class ForecastResponse(
 
     data class X(
         val clouds: Clouds?,
-        val dt: BigInteger?, // 1559314800
+        val dt: Long?, // 1559314800
         val dt_txt: String?, // 2019-05-31 15:00:00
         val main: Main?,
-        val rain: Rain?,
+        val rain: Rain? = null,
+        val snow: Snow? = null,
         val sys: Sys?,
         val weather: List<Weather?>?,
         val wind: Wind?
@@ -68,6 +69,11 @@ data class ForecastResponse(
         data class Wind(
             val deg: Double?, // 345.657
             val speed: Double? // 7.38
+        )
+
+        data class Snow(
+            @Json(name = "3h")
+            val threeH: Double?
         )
     }
 }
