@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity(), MoonFragment.OnGetMoonInfo, SunFragmen
         refreshTimer.scheduleAtFixedRate(UpdateInfoTask(),10000L,(sharedPreferences.getInt("refresh_time", 1) * 60 * 1000).toLong())
 
         weatherButton?.setOnClickListener{
-            startActivity(Intent(this@MainActivity, WeatherActivity::class.java))
+            startActivity(Intent(this@MainActivity, TestWeatherActivity::class.java))
         }
     }
 
