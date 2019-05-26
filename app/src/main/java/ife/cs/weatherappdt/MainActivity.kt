@@ -54,6 +54,37 @@ class MainActivity : AppCompatActivity(), MoonFragment.OnGetMoonInfo, SunFragmen
         }
         isOnline()
         setupAstroCalculator()
+        setupToolbar()
+        setupViewPager()
+
+        clockTimer.scheduleAtFixedRate(UpdateClockTask(), 1000L, 1000L)
+        refreshTimer.scheduleAtFixedRate(UpdateInfoTask(),10000L,(sharedPreferences.getInt("refresh_time", 1) * 60 * 1000).toLong())
+
+        weatherButton?.setOnClickListener{
+            startActivity(Intent(this@MainActivity, WeatherActivity::class.java))
+        }
+    }
+
+    private fun setupViewPager() {
+        if (viewPager == null) {
+            supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.sun_container, sunFragment)
+                .replace(R.id.moon_container, moonFragment)
+                .commit()
+        } else {
+            viewPager!!.adapter =
+                object : FragmentPagerAdapter(supportFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+                    override fun getItem(position: Int): Fragment {
+                        return if (position == 0) sunFragment else moonFragment
+                    }
+
+                    override fun getCount() = 2
+                }
+        }
+    }
+
+    private fun setupToolbar() {
         with(toolbar) {
             latuitude_textView.text = sharedPreferences.getString("latitude", "0")
             longitude_textView.text = sharedPreferences.getString("longitude", "0")
@@ -62,29 +93,6 @@ class MainActivity : AppCompatActivity(), MoonFragment.OnGetMoonInfo, SunFragmen
             time_textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.toolbarTextsize))
         }
         setSupportActionBar(toolbar as Toolbar)
-
-        if(viewPager == null) {
-            supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.sun_container, sunFragment)
-                .replace(R.id.moon_container, moonFragment)
-                .commit()
-        }
-        else {
-            viewPager.adapter = object : FragmentPagerAdapter(supportFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
-                override fun getItem(position: Int): Fragment {
-                    return if(position == 0) sunFragment else moonFragment
-                }
-                override fun getCount() = 2
-            }
-        }
-
-        clockTimer.scheduleAtFixedRate(UpdateClockTask(), 1000L, 1000L)
-        refreshTimer.scheduleAtFixedRate(UpdateInfoTask(),10000L,(sharedPreferences.getInt("refresh_time", 1) * 60 * 1000).toLong())
-
-        weatherButton?.setOnClickListener{
-            startActivity(Intent(this@MainActivity, WeatherActivity::class.java))
-        }
     }
 
     private fun setupAstroCalculator() {
