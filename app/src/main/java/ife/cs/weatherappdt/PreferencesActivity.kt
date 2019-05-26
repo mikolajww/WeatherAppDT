@@ -25,13 +25,13 @@ class PreferencesActivity: AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        layoutInflater.setFactory{ name: String, context: Context, attrs: AttributeSet ->
+/*        layoutInflater.setFactory{ name: String, context: Context, attrs: AttributeSet ->
             val v = tryInflate(name, context, attrs)
             if (v is TextView) {
                 v.setTextSize(TypedValue.COMPLEX_UNIT_SP, resources.getDimension(R.dimen.textsize))
             }
             return@setFactory v
-        }
+        }*/
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_preferences)
         supportFragmentManager.beginTransaction()
