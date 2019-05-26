@@ -1,6 +1,5 @@
 package ife.cs.weatherappdt
 
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.beust.klaxon.Json
@@ -16,8 +15,8 @@ import java.io.IOException
 class TestWeatherActivity : AppCompatActivity() {
 
     var jsonObject:JsonObject = JsonObject()
-    var weatherResponseObject:WeatherResponse? = null
-    var forecastResponseObject:ForecastResponse? = null
+    var weatherResponseObject: WeatherResponse? = null
+    var forecastResponseObject: ForecastResponse? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
