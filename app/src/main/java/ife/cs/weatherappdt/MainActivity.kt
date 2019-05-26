@@ -25,6 +25,11 @@ import java.util.*
 
 fun Double.format(digits: Int) = java.lang.String.format("%.${digits}f", this)
 
+fun Double.KToC() = this - 273.15
+fun Double.KToF() = this * 1.8 - 459.67
+fun Double.CToF() = this * 1.8 + 32
+fun Double.FToC() = (this - 32)/1.8
+
 class MainActivity : AppCompatActivity(), MoonFragment.OnGetMoonInfo, SunFragment.OnGetSunInfo {
 
     private lateinit var sunFragment: SunFragment
@@ -152,7 +157,7 @@ class MainActivity : AppCompatActivity(), MoonFragment.OnGetMoonInfo, SunFragmen
         return astroCalculator.moonInfo
     }
 
-    inner class UpdateClockTask: TimerTask() {
+    private inner class UpdateClockTask: TimerTask() {
         override fun run() {
             runOnUiThread {
                 val now = Calendar.getInstance()
@@ -163,7 +168,7 @@ class MainActivity : AppCompatActivity(), MoonFragment.OnGetMoonInfo, SunFragmen
         }
     }
 
-    inner class UpdateInfoTask: TimerTask() {
+    private inner class UpdateInfoTask: TimerTask() {
         override fun run() {
             runOnUiThread{
                 if(viewPager == null) {
