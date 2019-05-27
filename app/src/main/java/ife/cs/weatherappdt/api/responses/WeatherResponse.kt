@@ -1,4 +1,4 @@
-package ife.cs.weatherappdt.responses
+package ife.cs.weatherappdt.api.responses
 
 data class WeatherResponse(
     val base: String?, // stations

@@ -1,7 +1,6 @@
-package ife.cs.weatherappdt.responses
+package ife.cs.weatherappdt.api.responses
 
 import com.beust.klaxon.Json
-import java.math.BigInteger
 
 data class ForecastResponse(
     val city: City?,
