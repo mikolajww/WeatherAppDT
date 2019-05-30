@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity(), MoonFragment.OnGetMoonInfo, SunFragmen
                 startActivity(Intent(this@MainActivity, PreferencesActivity::class.java))
             }
         }
-        isOnline()
+        //isOnline()  // TODO: Skips frames
         setupAstroCalculator()
         setupToolbar()
         setupViewPager()
