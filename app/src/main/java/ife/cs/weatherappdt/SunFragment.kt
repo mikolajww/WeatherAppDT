@@ -42,12 +42,12 @@ class SunFragment : Fragment() {
             tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, resources.getDimension(R.dimen.textsize))
         }
         sunInfo = listener.getSunInfo()
-        sunrise_time.text = "Sunrise time:${(if (isLandscape()) "\n" else " ")}${sunInfo.sunrise}"
-        sunrise_azimuth.text = "Sunrise azimuth:${(if (isLandscape()) "\n" else " ")}${sunInfo.azimuthRise}"
-        sunset_time.text = "Sunset time:${(if (isLandscape()) "\n" else " ")}${sunInfo.sunset}"
-        sunset_azimuth.text = "Sunset azimuth:${(if (isLandscape()) "\n" else " ")} ${sunInfo.azimuthSet}"
-        civil_dawn.text = "Civil dawn time:${(if (isLandscape()) "\n" else " ")}${sunInfo.twilightMorning}"
-        civil_dusk.text = "Civil dusk time:${(if (isLandscape()) "\n" else " ")}${sunInfo.twilightEvening}"
+        sunrise_time.text = "Sunrise time:${newlineIfPortrait()}${sunInfo.sunrise}"
+        sunrise_azimuth.text = "Sunrise azimuth:${newlineIfPortrait()}${sunInfo.azimuthRise}"
+        sunset_time.text = "Sunset time:${newlineIfPortrait()}${sunInfo.sunset}"
+        sunset_azimuth.text = "Sunset azimuth:${newlineIfPortrait()} ${sunInfo.azimuthSet}"
+        civil_dawn.text = "Civil dawn time:${newlineIfPortrait()}${sunInfo.twilightMorning}"
+        civil_dusk.text = "Civil dusk time:${newlineIfPortrait()}${sunInfo.twilightEvening}"
     }
 
     private fun getAllTextViews(): List<TextView> {
@@ -59,7 +59,10 @@ class SunFragment : Fragment() {
 
     }
 
-    private fun isLandscape() = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
-
+    private fun newlineIfPortrait(): String {
+        return if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            " "
+        } else "\n"
+    }
 
 }
