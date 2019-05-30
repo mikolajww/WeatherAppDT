@@ -13,10 +13,11 @@ data class WeatherResponse(
     val timezone: Int?, // 7200
     val visibility: Int?, // 10000
     val weather: List<Weather?>?,
-    val wind: Wind?
+    val wind: Wind? = null,
+    val rain: ForecastResponse.X.Rain? = null
 ) {
     data class Wind(
-        val deg: Int?, // 240
+        val deg: Int? = 0, // 240
         val speed: Double? // 5.1
     )
 
