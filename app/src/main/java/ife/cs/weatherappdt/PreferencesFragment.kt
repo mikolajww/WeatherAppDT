@@ -22,7 +22,7 @@ class PreferencesFragment: PreferenceFragmentCompat() {
         with(findPreference<SeekBarPreference>("refresh_time")!!) {
             max = 100
             min = 1
-            summary = "$value + minutes"
+            summary = "$value minutes"
             onPreferenceChangeListener = Preference.OnPreferenceChangeListener { preference, newValue ->
                 preference.summary = "$newValue minutes"
                 true
