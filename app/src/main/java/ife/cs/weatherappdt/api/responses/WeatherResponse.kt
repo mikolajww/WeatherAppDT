@@ -14,11 +14,12 @@ data class WeatherResponse(
     val visibility: Int?, // 10000
     val weather: List<Weather?>?,
     val wind: Wind? = null,
-    val rain: ForecastResponse.X.Rain? = null
+    val rain: ForecastResponse.X.Rain? = null,
+    val snow: ForecastResponse.X.Snow? = null
 ) {
     data class Wind(
         val deg: Int? = 0, // 240
-        val speed: Double? // 5.1
+        val speed: Double? // 5.1`
     )
 
     data class Clouds(
