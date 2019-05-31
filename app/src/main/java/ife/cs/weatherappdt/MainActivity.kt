@@ -37,7 +37,7 @@ fun Double.FToC() = (this - 32)/1.8
 class MainActivity : AppCompatActivity(), MoonFragment.OnGetMoonInfo, SunFragment.OnGetSunInfo {
 
     private lateinit var sunFragment: SunFragment
-    private lateinit var dateTime:AstroDateTime
+    private lateinit var dateTime: AstroDateTime
     private lateinit var location: AstroCalculator.Location
     private lateinit var astroCalculator: AstroCalculator
 
@@ -57,20 +57,29 @@ class MainActivity : AppCompatActivity(), MoonFragment.OnGetMoonInfo, SunFragmen
         setContentView(R.layout.activity_main)
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         with(sharedPreferences) {
-            if(getString("latitude", "0")!!.equals("0", ignoreCase = true) or
-               getString("longitude", "0")!!.equals("0", ignoreCase = true)) {
+            if (getString("latitude", "0")!!.equals("0", ignoreCase = true) or
+                getString("longitude", "0")!!.equals("0", ignoreCase = true)
+            ) {
                 startActivity(Intent(this@MainActivity, PreferencesActivity::class.java))
             }
         }
-        Toast.makeText(this@MainActivity, "${if (verifyAvailableNetwork(this)) "" else "Not"} Connected to the internet", Toast.LENGTH_LONG).show()
+        Toast.makeText(
+            this@MainActivity,
+            "${if (verifyAvailableNetwork(this)) "" else "Not"} Connected to the internet",
+            Toast.LENGTH_LONG
+        ).show()
         setupAstroCalculator()
         setupToolbar()
         setupViewPager()
 
         clockTimer.scheduleAtFixedRate(UpdateClockTask(), 1000L, 1000L)
-        refreshTimer.scheduleAtFixedRate(UpdateInfoTask(),10000L,(sharedPreferences.getInt("refresh_time", 1) * 60 * 1000).toLong())
+        refreshTimer.scheduleAtFixedRate(
+            UpdateInfoTask(),
+            10000L,
+            (sharedPreferences.getInt("refresh_time", 1) * 60 * 1000).toLong()
+        )
 
-        weatherButton?.setOnClickListener{
+        weatherButton?.setOnClickListener {
             startActivity(Intent(this@MainActivity, TestWeatherActivity::class.java))
         }
     }
@@ -114,7 +123,7 @@ class MainActivity : AppCompatActivity(), MoonFragment.OnGetMoonInfo, SunFragmen
         dateTime = AstroDateTime(
             now.get(Calendar.YEAR), now.get(Calendar.MONTH) + 1, now.get(Calendar.DAY_OF_MONTH),
             now.get(Calendar.HOUR), now.get(Calendar.MINUTE), now.get(Calendar.SECOND),
-            (zone.getOffset(Date().time) / 1000 / 60 / 60 ) - 1, zone.inDaylightTime(Date())
+            (zone.getOffset(Date().time) / 1000 / 60 / 60) - 1, zone.inDaylightTime(Date())
         )
         location = AstroCalculator.Location(
             sharedPreferences.getString("latitude", "0").toDouble(),
@@ -140,7 +149,7 @@ class MainActivity : AppCompatActivity(), MoonFragment.OnGetMoonInfo, SunFragmen
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return when(item?.itemId) {
+        return when (item?.itemId) {
             R.id.preferences_menu_button -> {
                 startActivity(Intent(this, PreferencesActivity::class.java))
                 true
@@ -161,7 +170,7 @@ class MainActivity : AppCompatActivity(), MoonFragment.OnGetMoonInfo, SunFragmen
         return astroCalculator.moonInfo
     }
 
-    private inner class UpdateClockTask: TimerTask() {
+    private inner class UpdateClockTask : TimerTask() {
         override fun run() {
             runOnUiThread {
                 val now = Calendar.getInstance()
@@ -172,20 +181,18 @@ class MainActivity : AppCompatActivity(), MoonFragment.OnGetMoonInfo, SunFragmen
         }
     }
 
-    private inner class UpdateInfoTask: TimerTask() {
+    private inner class UpdateInfoTask : TimerTask() {
         override fun run() {
-            runOnUiThread{
-                if(viewPager == null) {
+            runOnUiThread {
+                if (viewPager == null) {
                     sunFragment.displaySunInfo()
                     moonFragment.displayMoonInfo()
-                }
-                else {
+                } else {
                     viewPager.adapter?.notifyDataSetChanged()
                 }
             }
         }
     }
-
 
     fun verifyAvailableNetwork(activity:AppCompatActivity):Boolean {
         val connectivityManager=activity.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
