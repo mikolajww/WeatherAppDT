@@ -2,8 +2,10 @@ package ife.cs.weatherappdt
 
 // woda niezagazowana
 
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.util.Log
@@ -19,9 +21,11 @@ import com.astrocalculator.AstroCalculator
 import com.astrocalculator.AstroDateTime
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.view.*
+import kotlinx.coroutines.*
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.concurrent.thread
 
 fun Double.format(digits: Int) = java.lang.String.format("%.${digits}f", this)
 
@@ -58,7 +62,7 @@ class MainActivity : AppCompatActivity(), MoonFragment.OnGetMoonInfo, SunFragmen
                 startActivity(Intent(this@MainActivity, PreferencesActivity::class.java))
             }
         }
-        //isOnline()  // TODO: Skips frames
+        Toast.makeText(this@MainActivity, "${if (verifyAvailableNetwork(this)) "" else "Not"} Connected to the internet", Toast.LENGTH_LONG).show()
         setupAstroCalculator()
         setupToolbar()
         setupViewPager()
@@ -182,21 +186,10 @@ class MainActivity : AppCompatActivity(), MoonFragment.OnGetMoonInfo, SunFragmen
         }
     }
 
-    private fun isOnline(): Boolean {
-        val runtime = Runtime.getRuntime()
-        try {
-            val ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8")
-            val exitValue = ipProcess.waitFor()
-            println("Connected to the internet")
-            Toast.makeText(this, "Connected to the internet", Toast.LENGTH_LONG).show()
-            return exitValue == 0
-        } catch (e: IOException) {
-            e.printStackTrace()
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
-        println("Unable to connect to the internet")
-        Toast.makeText(this, "Unable to connect to the internet", Toast.LENGTH_LONG).show()
-        return false
+
+    fun verifyAvailableNetwork(activity:AppCompatActivity):Boolean {
+        val connectivityManager=activity.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkInfo = connectivityManager.activeNetworkInfo
+        return  networkInfo != null && networkInfo.isConnected
     }
 }
