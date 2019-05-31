@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient_night_sky"
     android:orientation="vertical"
-    tools:context=".SunFragment">
+    tools:context=".fragment.SunFragment">
 
     <ImageView
         android:id="@+id/imageView"

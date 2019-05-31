@@ -19,13 +19,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
 import com.astrocalculator.AstroCalculator
 import com.astrocalculator.AstroDateTime
+import ife.cs.weatherappdt.fragment.MoonFragment
+import ife.cs.weatherappdt.fragment.SunFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.view.*
-import kotlinx.coroutines.*
-import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.concurrent.thread
 
 fun Double.format(digits: Int) = java.lang.String.format("%.${digits}f", this)
 

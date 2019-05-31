@@ -1,4 +1,4 @@
-package ife.cs.weatherappdt
+package ife.cs.weatherappdt.fragment
 
 
 import android.os.Bundle
@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import ife.cs.weatherappdt.R
 import ife.cs.weatherappdt.api.responses.WeatherResponse
 
 class WeatherFragment : Fragment() {

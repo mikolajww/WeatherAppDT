@@ -1,4 +1,4 @@
-package ife.cs.weatherappdt
+package ife.cs.weatherappdt.fragment
 
 import android.content.Context
 import android.os.Bundle
@@ -11,6 +11,7 @@ import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SeekBarPreference
+import ife.cs.weatherappdt.R
 
 class PreferencesFragment: PreferenceFragmentCompat() {
 

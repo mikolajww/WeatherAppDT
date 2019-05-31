@@ -1,4 +1,4 @@
-package ife.cs.weatherappdt
+package ife.cs.weatherappdt.fragment
 
 
 import android.content.res.Configuration
@@ -10,6 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.astrocalculator.AstroCalculator
+import ife.cs.weatherappdt.R
+import ife.cs.weatherappdt.format
 import kotlinx.android.synthetic.main.fragment_moon.*
 import java.util.*
 
