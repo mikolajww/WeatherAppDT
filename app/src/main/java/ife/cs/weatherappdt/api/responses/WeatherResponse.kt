@@ -19,7 +19,7 @@ data class WeatherResponse(
 ) {
     data class Wind(
         val deg: Int? = 0, // 240
-        val speed: Double? // 5.1`
+        val speed: Double? // 5.1
     )
 
     data class Clouds(

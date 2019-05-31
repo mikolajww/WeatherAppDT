@@ -1,6 +1,7 @@
 package ife.cs.weatherappdt
 
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.beust.klaxon.JsonObject
@@ -34,7 +35,7 @@ class TestWeatherActivity : AppCompatActivity() {
         }
 
         button3.setOnClickListener {
-
+            startActivity(Intent(this, WeatherActivity::class.java))
         }
     }
 
