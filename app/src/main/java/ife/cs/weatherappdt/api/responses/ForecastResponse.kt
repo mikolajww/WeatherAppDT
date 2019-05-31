@@ -58,7 +58,7 @@ data class ForecastResponse(
 
         data class Rain(
             @Json(name = "3h")
-            val threeH: Double? // 1.812
+            val threeH: Double? = null // 1.812
         )
 
         data class Sys(
@@ -72,7 +72,7 @@ data class ForecastResponse(
 
         data class Snow(
             @Json(name = "3h")
-            val threeH: Double?
+            val threeH: Double? = null
         )
     }
 }
