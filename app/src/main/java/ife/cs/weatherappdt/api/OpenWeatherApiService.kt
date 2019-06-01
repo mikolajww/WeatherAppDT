@@ -1,8 +1,41 @@
 package ife.cs.weatherappdt.api
 
-import okhttp3.Callback
-import okhttp3.OkHttpClient
-import okhttp3.Request
+import com.beust.klaxon.Klaxon
+import ife.cs.weatherappdt.api.responses.ForecastResponse
+import ife.cs.weatherappdt.api.responses.WeatherResponse
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.suspendCancellableCoroutine
+import okhttp3.*
+import java.io.IOException
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+
+suspend fun Call.await(): Response {
+    return suspendCancellableCoroutine { cont ->
+        cont.invokeOnCancellation {
+            cancel()
+        }
+        enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                if (!cont.isCancelled) {
+                    cont.resumeWithException(e)
+                }
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                if (!cont.isCancelled) {
+                    cont.resume(response)
+                }
+            }
+        })
+    }
+}
+
+suspend fun OkHttpClient.execute(request: Request): Response {
+    val call = this.newCall(request)
+    return call.await()
+}
+
 
 object OpenWeatherApiService {
     private val APPID = "8835e5a77fa77f31382ae1778b90042d"
@@ -11,15 +44,19 @@ object OpenWeatherApiService {
 
     private val client = OkHttpClient()
 
-    fun fetchCurrentWeather(city:String, country:String, callback: Callback) {
+    suspend fun fetchCurrentWeather(city:String, country:String): WeatherResponse? {
         val url = currentWeatherUrl.replace("**CITY**", city).replace("**COUNTRY**", country)
         val request = Request.Builder().url(url).build()
-        client.newCall(request).enqueue(callback)
+        val response = client.execute(request)
+        val body = response.body()?.string() ?: return null
+        return Klaxon().parse<WeatherResponse>(body)
     }
 
-    fun fetch5DayForecast(city: String, country: String, callback: Callback) {
+    suspend fun fetch5DayForecast(city: String, country: String): ForecastResponse? {
         val url = forecast5DayUrl.replace("**CITY**", city).replace("**COUNTRY**", country)
         val request = Request.Builder().url(url).build()
-        client.newCall(request).enqueue(callback)
+        val response = client.execute(request)
+        val body = response.body()?.string() ?: return null
+        return Klaxon().parse<ForecastResponse>(body)
     }
 }

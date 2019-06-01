@@ -10,10 +10,15 @@ import ife.cs.weatherappdt.api.OpenWeatherApiService
 import ife.cs.weatherappdt.api.responses.ForecastResponse
 import ife.cs.weatherappdt.api.responses.WeatherResponse
 import kotlinx.android.synthetic.main.activity_test_weather.*
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import okhttp3.*
 import java.io.IOException
 import java.io.BufferedReader
 import java.io.InputStreamReader
+
 
 
 class TestWeatherActivity : AppCompatActivity() {
@@ -27,11 +32,15 @@ class TestWeatherActivity : AppCompatActivity() {
         setContentView(R.layout.activity_test_weather)
 
         button.setOnClickListener {
-            fetchCurrentWeatherJson()
+            GlobalScope.launch(Dispatchers.Default, CoroutineStart.DEFAULT, null, {
+                fetchCurrentWeatherJson()
+            })
         }
 
         button2.setOnClickListener {
-            fetch5DayForecastJson()
+            GlobalScope.launch(Dispatchers.Default, CoroutineStart.DEFAULT, null, {
+                fetch5DayForecastJson()
+            })
         }
 
         button3.setOnClickListener {
@@ -39,48 +48,16 @@ class TestWeatherActivity : AppCompatActivity() {
         }
     }
 
-    fun fetchCurrentWeatherJson() {
+    suspend fun fetchCurrentWeatherJson() {
         println("Fetching current weather JSON...")
-        OpenWeatherApiService.fetchCurrentWeather("Lodz", "pl", object : Callback {
-            val fileName = "CurrentWeather"
-            override fun onResponse(call: Call, response: Response) {
-                val body = response.body()!!.string()
-
-                println(body)
-                /*
-                val parser = Parser.default()
-                jsonObject = parser.parse(StringBuilder(body)) as JsonObject
-                println(jsonObject)*/
-                weatherResponseObject = Klaxon().parse<WeatherResponse>(body)
-                createFile(fileName, body)
-                println(weatherResponseObject)
-            }
-
-            override fun onFailure(call: Call, e: IOException) {
-                println(readFromFile(fileName))
-                println("Failed to fetch JSON")
-            }
-        })
+        val response = OpenWeatherApiService.fetchCurrentWeather("Lodz", "pl")
+        println(response)
     }
 
-    fun fetch5DayForecastJson() {
+    suspend fun fetch5DayForecastJson() {
         println("Fetching 5 day forecast JSON...")
-        OpenWeatherApiService.fetch5DayForecast("Lodz", "pl", object : Callback {
-            val fileName = "5DayForecast"
-            override fun onResponse(call: Call, response: Response) {
-                val body = response.body()!!.string()
-                println(body)
-                forecastResponseObject = Klaxon().parse<ForecastResponse>(body)
-                createFile(fileName, body)
-                println(forecastResponseObject)
-                println(forecastResponseObject?.list?.get(0)?.main?.temp?.KToC())
-            }
-
-            override fun onFailure(call: Call, e: IOException) {
-                println(readFromFile(fileName))
-                println("Failed to fetch JSON")
-            }
-        })
+        val response = OpenWeatherApiService.fetch5DayForecast("Lodz", "pl")
+        println(response)
     }
 
     fun createFile(fileName: String?, body: String?) {
