@@ -35,10 +35,6 @@ class CityFragment : Fragment() {
                 adapter = MyCityRecyclerViewAdapter(listener).also { recyclerViewAdapter = it }
             }
         }
-        with(view.checkbox) {
-            isChecked = true
-            jumpDrawablesToCurrentState()
-        }
         return view
     }
 
