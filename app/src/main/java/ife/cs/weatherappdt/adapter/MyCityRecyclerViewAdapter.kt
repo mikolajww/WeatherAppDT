@@ -35,7 +35,7 @@ class MyCityRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = CityList.ITEMS[position]
+        val item = CityList.get(position)
         holder.cityName.text = item.name
         holder.countryName.text = item.country
         with(holder.mView) {
@@ -44,7 +44,7 @@ class MyCityRecyclerViewAdapter(
         }
     }
 
-    override fun getItemCount(): Int = CityList.ITEMS.size
+    override fun getItemCount(): Int = CityList.getAll().size
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
         val cityName: TextView = mView.city_name

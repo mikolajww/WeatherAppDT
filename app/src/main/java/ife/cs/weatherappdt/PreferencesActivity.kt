@@ -20,7 +20,7 @@ class PreferencesActivity: AppCompatActivity(), CityFragment.OnListFragmentInter
             .replace(R.id.city_list_container, CityFragment().also { cityFragment = it })
             .commit()
         add_city.setOnClickListener {
-            CityList.ITEMS.add(City("Gdansk", "pl"))
+            CityList.add(City("Gdansk", "pl"))
             cityFragment.recyclerViewAdapter.notifyDataSetChanged()
         }
     }
