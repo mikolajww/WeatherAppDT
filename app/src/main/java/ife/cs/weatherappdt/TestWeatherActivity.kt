@@ -10,10 +10,7 @@ import ife.cs.weatherappdt.api.OpenWeatherApiService
 import ife.cs.weatherappdt.api.responses.ForecastResponse
 import ife.cs.weatherappdt.api.responses.WeatherResponse
 import kotlinx.android.synthetic.main.activity_test_weather.*
-import kotlinx.coroutines.CoroutineStart
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import okhttp3.*
 import java.io.IOException
 import java.io.BufferedReader
@@ -32,15 +29,15 @@ class TestWeatherActivity : AppCompatActivity() {
         setContentView(R.layout.activity_test_weather)
 
         button.setOnClickListener {
-            GlobalScope.launch(Dispatchers.Default, CoroutineStart.DEFAULT, null, {
+            GlobalScope.launch {
                 fetchCurrentWeatherJson()
-            })
+            }
         }
 
         button2.setOnClickListener {
-            GlobalScope.launch(Dispatchers.Default, CoroutineStart.DEFAULT, null, {
+            GlobalScope.launch {
                 fetch5DayForecastJson()
-            })
+            }
         }
 
         button3.setOnClickListener {
@@ -50,14 +47,14 @@ class TestWeatherActivity : AppCompatActivity() {
 
     suspend fun fetchCurrentWeatherJson() {
         println("Fetching current weather JSON...")
-        val response = OpenWeatherApiService.fetchCurrentWeather("Lodz", "pl")
-        println(response)
+        weatherResponseObject = OpenWeatherApiService.fetchCurrentWeather("Lodz", "pl")
+        println(weatherResponseObject)
     }
 
     suspend fun fetch5DayForecastJson() {
         println("Fetching 5 day forecast JSON...")
-        val response = OpenWeatherApiService.fetch5DayForecast("Lodz", "pl")
-        println(response)
+        forecastResponseObject = OpenWeatherApiService.fetch5DayForecast("Lodz", "pl")
+        println(forecastResponseObject)
     }
 
     fun createFile(fileName: String?, body: String?) {
