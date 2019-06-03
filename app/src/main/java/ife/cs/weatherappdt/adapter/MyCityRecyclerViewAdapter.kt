@@ -6,11 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
-import androidx.appcompat.widget.SwitchCompat
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModelProviders
 import ife.cs.weatherappdt.R
+import ife.cs.weatherappdt.data.CityViewModel
 import ife.cs.weatherappdt.fragment.CityFragment.OnListFragmentInteractionListener
-import ife.cs.weatherappdt.data.City
-import ife.cs.weatherappdt.data.CityList
+import ife.cs.weatherappdt.data.model.City
 
 import kotlinx.android.synthetic.main.fragment_city.view.*
 
@@ -20,7 +21,7 @@ class MyCityRecyclerViewAdapter(
 ) : RecyclerView.Adapter<MyCityRecyclerViewAdapter.ViewHolder>() {
 
     private val mOnClickListener: View.OnClickListener
-
+    private var cities: List<City> = emptyList()
     init {
         mOnClickListener = View.OnClickListener { v ->
             val item = v.tag as City
@@ -35,7 +36,7 @@ class MyCityRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = CityList.get(position)
+        val item = cities[position]
         holder.cityName.text = item.name
         holder.countryName.text = item.country
         with(holder.mView) {
@@ -44,11 +45,16 @@ class MyCityRecyclerViewAdapter(
         }
     }
 
-    override fun getItemCount(): Int = CityList.getAll().size
+    override fun getItemCount(): Int = cities.size
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
         val cityName: TextView = mView.city_name
         val countryName: TextView = mView.country_name
         val checkBox: CheckBox = mView.checkbox
+    }
+
+    internal fun setCities(newCities: List<City>) {
+        cities = newCities
+        notifyDataSetChanged()
     }
 }

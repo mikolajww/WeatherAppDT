@@ -17,9 +17,9 @@ class WeatherActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_weather)
-        GlobalScope.launch(Dispatchers.IO, CoroutineStart.DEFAULT, null, {
+        GlobalScope.launch{
             OpenWeatherApiService.fetchCurrentWeather("Lodz", "pl").also { println(it) }
-        })
+        }
 
     }
 
