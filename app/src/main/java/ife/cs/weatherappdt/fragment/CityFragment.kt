@@ -9,10 +9,14 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import ife.cs.weatherappdt.adapter.MyCityRecyclerViewAdapter
 import ife.cs.weatherappdt.R
-import ife.cs.weatherappdt.data.City
-import kotlinx.android.synthetic.main.fragment_city.view.*
+import ife.cs.weatherappdt.data.CityViewModel
+import ife.cs.weatherappdt.data.model.City
+import kotlinx.android.synthetic.main.fragment_city_list.*
 
 
 class CityFragment : Fragment() {
@@ -20,20 +24,28 @@ class CityFragment : Fragment() {
 
     private var listener: OnListFragmentInteractionListener? = null
     lateinit var recyclerViewAdapter: MyCityRecyclerViewAdapter
+    private lateinit var viewModel: CityViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_city_list, container, false)
-        if (view is RecyclerView) {
-            with(view) {
-                layoutManager = when {
-                    columnCount <= 1 -> LinearLayoutManager(context)
-                    else -> GridLayoutManager(context, columnCount)
-                }
-                adapter = MyCityRecyclerViewAdapter(listener).also { recyclerViewAdapter = it }
+        val recyclerView = view.findViewById<RecyclerView>(R.id.list)
+        with(recyclerView) {
+            layoutManager = when {
+                columnCount <= 1 -> LinearLayoutManager(context)
+                else -> GridLayoutManager(context, columnCount)
             }
+            recyclerViewAdapter = MyCityRecyclerViewAdapter(listener)
+            adapter = recyclerViewAdapter
+        }
+        viewModel = ViewModelProviders.of(this).get(CityViewModel::class.java)
+        viewModel.allCities.observe(this, Observer {
+            recyclerViewAdapter.setCities(it)
+        })
+        view.findViewById<FloatingActionButton>(R.id.add_city).setOnClickListener {
+            viewModel.insert(City("Gdansk", "pl"))
         }
         return view
     }

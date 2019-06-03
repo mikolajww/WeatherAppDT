@@ -27,7 +27,7 @@ class WeatherFragment : Fragment() {
     ): View? {
         GlobalScope.launch {
             launchWithLoading {
-                val response = OpenWeatherApiService.fetchCurrentWeather("Lodz", "pl")
+                val response = OpenWeatherApiService.fetchCurrentWeather("London", "uk")
                 parseWeatherResponse(response)
             }
         }
