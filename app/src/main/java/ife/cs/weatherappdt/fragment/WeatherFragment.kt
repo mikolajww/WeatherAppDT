@@ -23,6 +23,11 @@ class WeatherFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        return inflater.inflate(R.layout.fragment_weather, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         if(verifyAvailableNetwork(activity as AppCompatActivity)) {
             GlobalScope.launch {
                 launchWithLoading {
@@ -37,7 +42,6 @@ class WeatherFragment : Fragment() {
             parseWeatherResponse(response)
             //read from file
         }
-        return inflater.inflate(R.layout.fragment_weather, container, false)
     }
 
     private fun parseWeatherResponse(weatherResponse: WeatherResponse?) {
