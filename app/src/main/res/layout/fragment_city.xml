@@ -6,7 +6,7 @@
               android:focusable="true">
 
     <TextView
-            android:id="@+id/city_name"
+            android:id="@+id/city_name_weather"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="0dp"

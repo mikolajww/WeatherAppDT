@@ -26,13 +26,15 @@ class WeatherFragment : Fragment() {
         if(verifyAvailableNetwork(activity as AppCompatActivity)) {
             GlobalScope.launch {
                 launchWithLoading {
-                    val response = OpenWeatherApiService.fetchCurrentWeather("London", "uk")
+                    val response = OpenWeatherApiService.fetchCurrentWeather("London", "uk", activity as AppCompatActivity)
                     parseWeatherResponse(response)
                 }
             }
         }
         else {
             Toast.makeText(activity, "No internet connection, fetching previously saved data.", Toast.LENGTH_SHORT).show()
+            var response = OpenWeatherApiService.readCurrentWeather("London", "uk", activity as AppCompatActivity)
+            parseWeatherResponse(response)
             //read from file
         }
         return inflater.inflate(R.layout.fragment_weather, container, false)
@@ -45,7 +47,7 @@ class WeatherFragment : Fragment() {
         }
         with(weatherResponse) {
             activity?.runOnUiThread {
-                city_name.text = name
+                city_name_weather.text = name
                 city_latitude.text = "Lat: ${coord?.lat.toString()}"
                 city_longitude.text = "Lon: ${coord?.lon.toString()}"
                 temperature_now.text = main?.temp.toString() + OpenWeatherApiService.getUnitSuffix()

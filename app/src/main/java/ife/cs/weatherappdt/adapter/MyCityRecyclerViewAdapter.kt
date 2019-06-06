@@ -39,7 +39,7 @@ class MyCityRecyclerViewAdapter(
     override fun getItemCount(): Int = cities.size
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
-        val cityName: TextView = mView.city_name
+        val cityName: TextView = mView.city_name_weather
         val countryName: TextView = mView.country_name
         val checkBox: CheckBox = mView.checkbox
     }

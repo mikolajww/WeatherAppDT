@@ -37,6 +37,7 @@ class TestWeatherActivity : AppCompatActivity() {
             }
             else {
                 Toast.makeText(this, "No internet connection, fetching previously saved data.", Toast.LENGTH_SHORT).show()
+                OpenWeatherApiService.readCurrentWeather("Lodz", "pl", this)
                 //read from file
             }
         }
@@ -48,6 +49,7 @@ class TestWeatherActivity : AppCompatActivity() {
             }
             else {
                 Toast.makeText(this, "No internet connection, fetching previously saved data.", Toast.LENGTH_SHORT).show()
+                OpenWeatherApiService.read5DayForecast("Lodz", "pl", this)
                 //read from file
             }
         }
@@ -58,30 +60,13 @@ class TestWeatherActivity : AppCompatActivity() {
 
     suspend fun fetchCurrentWeatherJson() {
         println("Fetching current weather JSON...")
-            weatherResponseObject = OpenWeatherApiService.fetchCurrentWeather("Lodz", "pl")
+            weatherResponseObject = OpenWeatherApiService.fetchCurrentWeather("Lodz", "pl", this)
             println(weatherResponseObject)
     }
 
     suspend fun fetch5DayForecastJson() {
         println("Fetching 5 day forecast JSON...")
-            forecastResponseObject = OpenWeatherApiService.fetch5DayForecast("Lodz", "pl")
+            forecastResponseObject = OpenWeatherApiService.fetch5DayForecast("Lodz", "pl", this)
             println(forecastResponseObject)
-    }
-
-    fun createFile(fileName: String?, body: String?) {
-        openFileOutput(fileName, Context.MODE_PRIVATE).use {
-            if (body != null) {
-                it.write(body.toByteArray())
-            }
-        }
-    }
-
-    fun readFromFile(fileName: String?): String {
-        val ctx = applicationContext
-        val fileInputStream = ctx.openFileInput(fileName)
-        val inputStreamReader = InputStreamReader(fileInputStream)
-        val bufferedReader = BufferedReader(inputStreamReader)
-
-        return bufferedReader.readLine()
     }
 }

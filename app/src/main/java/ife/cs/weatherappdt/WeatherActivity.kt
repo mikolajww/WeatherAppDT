@@ -21,12 +21,13 @@ class WeatherActivity : AppCompatActivity() {
         if(verifyAvailableNetwork(this@WeatherActivity)) {
         GlobalScope.launch{
 
-                OpenWeatherApiService.fetchCurrentWeather("Lodz", "pl").also { println(it) }
+                OpenWeatherApiService.fetchCurrentWeather("Lodz", "pl", this@WeatherActivity).also { println(it) }
             }
 
         }
         else {
             Toast.makeText(this@WeatherActivity, "No internet connection, fetching previously saved data.", Toast.LENGTH_SHORT).show()
+            OpenWeatherApiService.readCurrentWeather("Lodz", "pl", this@WeatherActivity)
             //read from file
         }
     }

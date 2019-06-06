@@ -1,11 +1,17 @@
 package ife.cs.weatherappdt.api
 
+import android.content.Context
+import android.net.ConnectivityManager
+import androidx.appcompat.app.AppCompatActivity
 import com.beust.klaxon.Klaxon
+import ife.cs.weatherappdt.MainActivity
 import ife.cs.weatherappdt.api.responses.ForecastResponse
 import ife.cs.weatherappdt.api.responses.WeatherResponse
 import kotlinx.coroutines.*
 import okhttp3.*
+import java.io.BufferedReader
 import java.io.IOException
+import java.io.InputStreamReader
 import java.io.StringReader
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
@@ -47,24 +53,39 @@ object OpenWeatherApiService {
     enum class Units { C, F, K }
     var unit: Units = OpenWeatherApiService.Units.C
 
-    suspend fun fetchCurrentWeather(city:String, country:String): WeatherResponse? {
-        val url = currentWeatherUrl.replace("**CITY**", city)
-                                   .replace("**COUNTRY**", country)
-                                   .setUnit(unit)
-        val request = Request.Builder().url(url).build()
-        val response = client.execute(request)
-        val body = response.body()?.string() ?: return null
-        val obj = Klaxon().parseJsonObject(StringReader(body))
-        return Klaxon().parseFromJsonObject<WeatherResponse>(obj)
+    suspend fun fetchCurrentWeather(city:String, country:String, context: Context): WeatherResponse? {
+            val url = currentWeatherUrl.replace("**CITY**", city)
+                .replace("**COUNTRY**", country)
+                .setUnit(unit)
+            val request = Request.Builder().url(url).build()
+            val response = client.execute(request)
+            val body = response.body()?.string() ?: return null
+            val obj = Klaxon().parseJsonObject(StringReader(body))
+            createFile("${city}_${country}CurrentWeather.json", body, context)
+            return Klaxon().parseFromJsonObject<WeatherResponse>(obj)
     }
 
-    suspend fun fetch5DayForecast(city: String, country: String): ForecastResponse? {
+    suspend fun fetch5DayForecast(city: String, country: String, context: Context): ForecastResponse? {
         val url = forecast5DayUrl.replace("**CITY**", city)
                                  .replace("**COUNTRY**", country)
                                  .setUnit(unit)
         val request = Request.Builder().url(url).build()
         val response = client.execute(request)
         val body = response.body()?.string() ?: return null
+        val obj = Klaxon().parseJsonObject(StringReader(body))
+        createFile("${city}_${country}5DayForecast.json", body, context)
+        return Klaxon().parseFromJsonObject<ForecastResponse>(obj)
+    }
+
+    fun readCurrentWeather(city:String, country:String, context: Context): WeatherResponse? {
+
+        val body = readFromFile("${city}_${country}CurrentWeather.json", context)
+        val obj = Klaxon().parseJsonObject(StringReader(body))
+        return Klaxon().parseFromJsonObject<WeatherResponse>(obj)
+    }
+
+    fun read5DayForecast(city: String, country: String, context: Context): ForecastResponse? {
+        val body = readFromFile("${city}_${country}5DayForecast.json", context)
         val obj = Klaxon().parseJsonObject(StringReader(body))
         return Klaxon().parseFromJsonObject<ForecastResponse>(obj)
     }
@@ -82,4 +103,22 @@ object OpenWeatherApiService {
         OpenWeatherApiService.Units.F -> "°F"
         OpenWeatherApiService.Units.K -> "K"
     }
+
+    private fun createFile(fileName: String?, body: String?, context:Context) {
+        context.openFileOutput(fileName, Context.MODE_PRIVATE).use {
+            if (body != null) {
+                it.write(body.toByteArray())
+            }
+        }
+    }
+
+    private fun readFromFile(fileName: String?, context: Context): String {
+        val ctx = context.applicationContext
+        val fileInputStream = ctx.openFileInput(fileName)
+        val inputStreamReader = InputStreamReader(fileInputStream)
+        val bufferedReader = BufferedReader(inputStreamReader)
+
+        return bufferedReader.readLine()
+    }
+
 }
