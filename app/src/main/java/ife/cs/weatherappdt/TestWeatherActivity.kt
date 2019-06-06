@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import com.beust.klaxon.JsonObject
 import com.beust.klaxon.Klaxon
 import ife.cs.weatherappdt.api.OpenWeatherApiService
@@ -29,17 +30,27 @@ class TestWeatherActivity : AppCompatActivity() {
         setContentView(R.layout.activity_test_weather)
 
         button.setOnClickListener {
-            GlobalScope.launch {
-                fetchCurrentWeatherJson()
+            if(verifyAvailableNetwork(this)) {
+                GlobalScope.launch {
+                    fetchCurrentWeatherJson()
+                }
+            }
+            else {
+                Toast.makeText(this, "No internet connection, fetching previously saved data.", Toast.LENGTH_SHORT).show()
+                //read from file
             }
         }
-
         button2.setOnClickListener {
-            GlobalScope.launch {
-                fetch5DayForecastJson()
+            if(verifyAvailableNetwork(this)) {
+                GlobalScope.launch {
+                    fetch5DayForecastJson()
+                }
+            }
+            else {
+                Toast.makeText(this, "No internet connection, fetching previously saved data.", Toast.LENGTH_SHORT).show()
+                //read from file
             }
         }
-
         button3.setOnClickListener {
             startActivity(Intent(this, WeatherActivity::class.java))
         }
@@ -47,14 +58,14 @@ class TestWeatherActivity : AppCompatActivity() {
 
     suspend fun fetchCurrentWeatherJson() {
         println("Fetching current weather JSON...")
-        weatherResponseObject = OpenWeatherApiService.fetchCurrentWeather("Lodz", "pl")
-        println(weatherResponseObject)
+            weatherResponseObject = OpenWeatherApiService.fetchCurrentWeather("Lodz", "pl")
+            println(weatherResponseObject)
     }
 
     suspend fun fetch5DayForecastJson() {
         println("Fetching 5 day forecast JSON...")
-        forecastResponseObject = OpenWeatherApiService.fetch5DayForecast("Lodz", "pl")
-        println(forecastResponseObject)
+            forecastResponseObject = OpenWeatherApiService.fetch5DayForecast("Lodz", "pl")
+            println(forecastResponseObject)
     }
 
     fun createFile(fileName: String?, body: String?) {

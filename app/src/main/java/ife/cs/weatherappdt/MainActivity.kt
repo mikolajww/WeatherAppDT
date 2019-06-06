@@ -19,12 +19,19 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
 import com.astrocalculator.AstroCalculator
 import com.astrocalculator.AstroDateTime
+import ife.cs.weatherappdt.api.OpenWeatherApiService
 import ife.cs.weatherappdt.fragment.MoonFragment
 import ife.cs.weatherappdt.fragment.SunFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.view.*
 import java.text.SimpleDateFormat
 import java.util.*
+
+fun verifyAvailableNetwork(activity: AppCompatActivity):Boolean {
+    val connectivityManager = activity.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    val networkInfo = connectivityManager.activeNetworkInfo
+    return  networkInfo != null && networkInfo.isConnected
+}
 
 fun Double.format(digits: Int) = java.lang.String.format("%.${digits}f", this)
 
@@ -191,11 +198,5 @@ class MainActivity : AppCompatActivity(), MoonFragment.OnGetMoonInfo, SunFragmen
                 }
             }
         }
-    }
-
-    fun verifyAvailableNetwork(activity:AppCompatActivity):Boolean {
-        val connectivityManager = activity.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val networkInfo = connectivityManager.activeNetworkInfo
-        return  networkInfo != null && networkInfo.isConnected
     }
 }

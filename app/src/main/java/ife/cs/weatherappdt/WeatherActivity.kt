@@ -2,6 +2,7 @@ package ife.cs.weatherappdt
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import ife.cs.weatherappdt.api.OpenWeatherApiService
 import ife.cs.weatherappdt.api.responses.WeatherResponse
 import ife.cs.weatherappdt.fragment.WeatherFragment
@@ -17,10 +18,16 @@ class WeatherActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_weather)
+        if(verifyAvailableNetwork(this@WeatherActivity)) {
         GlobalScope.launch{
-            OpenWeatherApiService.fetchCurrentWeather("Lodz", "pl").also { println(it) }
+
+                OpenWeatherApiService.fetchCurrentWeather("Lodz", "pl").also { println(it) }
+            }
+
         }
-
+        else {
+            Toast.makeText(this@WeatherActivity, "No internet connection, fetching previously saved data.", Toast.LENGTH_SHORT).show()
+            //read from file
+        }
     }
-
 }

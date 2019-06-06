@@ -6,11 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import ife.cs.weatherappdt.R
 import ife.cs.weatherappdt.api.OpenWeatherApiService
 import ife.cs.weatherappdt.api.responses.WeatherResponse
+import ife.cs.weatherappdt.verifyAvailableNetwork
 import kotlinx.android.synthetic.main.fragment_weather.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -21,13 +23,18 @@ class WeatherFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        GlobalScope.launch {
-            launchWithLoading {
-                val response = OpenWeatherApiService.fetchCurrentWeather("London", "uk")
-                parseWeatherResponse(response)
+        if(verifyAvailableNetwork(activity as AppCompatActivity)) {
+            GlobalScope.launch {
+                launchWithLoading {
+                    val response = OpenWeatherApiService.fetchCurrentWeather("London", "uk")
+                    parseWeatherResponse(response)
+                }
             }
         }
-
+        else {
+            Toast.makeText(activity, "No internet connection, fetching previously saved data.", Toast.LENGTH_SHORT).show()
+            //read from file
+        }
         return inflater.inflate(R.layout.fragment_weather, container, false)
     }
 
@@ -51,11 +58,9 @@ class WeatherFragment : Fragment() {
 
 
     }
-
     private suspend fun launchWithLoading(f:suspend () -> Unit) {
         activity?.runOnUiThread { loading_progress_bar.visibility = View.VISIBLE }
         f.invoke()
         activity?.runOnUiThread { loading_progress_bar.visibility = View.GONE }
     }
-
 }
