@@ -6,7 +6,7 @@ data class ForecastResponse(
     val city: City?,
     val cnt: Int?, // 40
     val cod: String?, // 200
-    val list: List<X?>?,
+    val list: List<X>,
     val message: Double? // 0.0074
 ) {
     data class City(

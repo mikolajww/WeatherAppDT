@@ -9,6 +9,10 @@ import ife.cs.weatherappdt.api.responses.ForecastResponse
 import ife.cs.weatherappdt.api.responses.WeatherResponse
 import kotlinx.coroutines.*
 import okhttp3.*
+import java.io.IOException
+import java.io.StringReader
+import java.time.LocalDateTime
+import java.util.*
 import java.io.*
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
@@ -100,6 +104,39 @@ object OpenWeatherApiService {
             Units.F -> "$this&units=imperial"
             Units.K -> this
         }
+    }
+
+    fun getParsedList(forecastList: List<ForecastResponse.X>):List<ForecastResponse.X> {
+
+        val current = Calendar.getInstance()
+
+        val currentDay = current.get(Calendar.DAY_OF_MONTH)
+        val currentMonth = current.get(Calendar.MONTH) + 1
+        val currentYear = current.get(Calendar.YEAR)
+        var parsedForecastList:MutableList<ForecastResponse.X> = mutableListOf()
+
+        var daysAheadCount = 1
+        var targetForecast = "$currentYear-${formatDoubleDigitDayOrMonth(currentMonth)}-${formatDoubleDigitDayOrMonth(currentDay + daysAheadCount)} 12:00:00"
+
+        for(element in forecastList) {
+//            println("Target: $targetForecast")
+//            println("Considered: ${element.dt_txt}")
+//            println("\n")
+            if(element.dt_txt.equals(targetForecast)) {
+                parsedForecastList.add(element)
+                daysAheadCount++
+                targetForecast = "$currentYear-${formatDoubleDigitDayOrMonth(currentMonth)}-${formatDoubleDigitDayOrMonth(currentDay + daysAheadCount)} 12:00:00"
+            }
+            if(daysAheadCount > 4) { break }
+        }
+        return parsedForecastList
+    }
+
+    fun formatDoubleDigitDayOrMonth(dayOrMonth:Int):String {
+        if(dayOrMonth < 10) {
+            return "0$dayOrMonth"
+        }
+        return "$dayOrMonth"
     }
 
     fun getUnitSuffix(): String = when(unit) {
