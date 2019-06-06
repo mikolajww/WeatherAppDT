@@ -25,7 +25,7 @@ abstract class CityRoomDatabase : RoomDatabase() {
                     context.applicationContext,
                     CityRoomDatabase::class.java,
                     "cities_database"
-                ).build()
+                ).allowMainThreadQueries().build()
                 INSTANCE = instance
                 return instance
             }

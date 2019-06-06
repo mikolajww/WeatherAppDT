@@ -10,7 +10,7 @@ import ife.cs.weatherappdt.fragment.CityFragment
 import ife.cs.weatherappdt.fragment.PreferencesFragment
 import kotlinx.android.synthetic.main.activity_preferences.*
 
-class PreferencesActivity: AppCompatActivity(), CityFragment.OnListFragmentInteractionListener {
+class PreferencesActivity: AppCompatActivity(){
 
     private lateinit var cityFragment: CityFragment
 
@@ -21,8 +21,6 @@ class PreferencesActivity: AppCompatActivity(), CityFragment.OnListFragmentInter
         tab_layout.setupWithViewPager(pager)
     }
 
-    override fun onListFragmentInteraction(item: City) {
-    }
 
     inner class TabViewPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
