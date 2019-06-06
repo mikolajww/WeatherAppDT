@@ -9,10 +9,7 @@ import ife.cs.weatherappdt.api.responses.ForecastResponse
 import ife.cs.weatherappdt.api.responses.WeatherResponse
 import kotlinx.coroutines.*
 import okhttp3.*
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStreamReader
-import java.io.StringReader
+import java.io.*
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
@@ -78,16 +75,23 @@ object OpenWeatherApiService {
     }
 
     fun readCurrentWeather(city:String, country:String, context: Context): WeatherResponse? {
-
-        val body = readFromFile("${city}_${country}CurrentWeather.json", context)
-        val obj = Klaxon().parseJsonObject(StringReader(body))
-        return Klaxon().parseFromJsonObject<WeatherResponse>(obj)
+        return try {
+            val body = readFromFile("${city}_${country}CurrentWeather.json", context)
+            val obj = Klaxon().parseJsonObject(StringReader(body))
+            Klaxon().parseFromJsonObject<WeatherResponse>(obj)
+        }catch (e: FileNotFoundException) {
+            null
+        }
     }
 
     fun read5DayForecast(city: String, country: String, context: Context): ForecastResponse? {
-        val body = readFromFile("${city}_${country}5DayForecast.json", context)
-        val obj = Klaxon().parseJsonObject(StringReader(body))
-        return Klaxon().parseFromJsonObject<ForecastResponse>(obj)
+        return try {
+            val body = readFromFile("${city}_${country}5DayForecast.json", context)
+            val obj = Klaxon().parseJsonObject(StringReader(body))
+            Klaxon().parseFromJsonObject<ForecastResponse>(obj)
+        }catch (e: FileNotFoundException) {
+            null
+        }
     }
 
     private fun String.setUnit(unit: Units): String {
@@ -111,14 +115,12 @@ object OpenWeatherApiService {
             }
         }
     }
-
-    private fun readFromFile(fileName: String?, context: Context): String {
+    @Throws(FileNotFoundException::class)
+    private fun readFromFile(fileName: String?, context: Context): String? {
         val ctx = context.applicationContext
         val fileInputStream = ctx.openFileInput(fileName)
         val inputStreamReader = InputStreamReader(fileInputStream)
         val bufferedReader = BufferedReader(inputStreamReader)
-
         return bufferedReader.readLine()
     }
-
 }
