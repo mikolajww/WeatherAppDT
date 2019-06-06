@@ -2,6 +2,7 @@ package ife.cs.weatherappdt.fragment
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -45,8 +46,17 @@ class CityFragment : Fragment() {
             recyclerViewAdapter.setCities(it)
         })
         view.findViewById<FloatingActionButton>(R.id.add_city).setOnClickListener {
-            viewModel.insert(City("Gdansk", "pl"))
+            val cityName = city_name_edit_text.text.toString()
+            val countryCode = country_code_edit_text.text.toString()
+            if( cityName.isNotBlank() &&
+                countryCode.isNotBlank() ) {
+                viewModel.insert(City(cityName, countryCode))
+                city_name_edit_text.setText("")
+                country_code_edit_text.setText("")
+            }
+
         }
+
         return view
     }
 
