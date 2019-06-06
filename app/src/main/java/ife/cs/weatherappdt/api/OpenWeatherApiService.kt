@@ -46,7 +46,6 @@ object OpenWeatherApiService {
 
     enum class Units { C, F, K }
     var unit: Units = OpenWeatherApiService.Units.C
-    private var job: Job = Job()
 
     suspend fun fetchCurrentWeather(city:String, country:String): WeatherResponse? {
         val url = currentWeatherUrl.replace("**CITY**", city)
