@@ -14,6 +14,7 @@ import java.io.StringReader
 import java.time.LocalDateTime
 import java.util.*
 import java.io.*
+import java.text.SimpleDateFormat
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
@@ -137,6 +138,11 @@ object OpenWeatherApiService {
             return "0$dayOrMonth"
         }
         return "$dayOrMonth"
+    }
+
+    fun getWeekdayName(dateString:String):String {
+        val date = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dateString)
+        return SimpleDateFormat("EE").format(date)
     }
 
     fun getUnitSuffix(): String = when(unit) {
