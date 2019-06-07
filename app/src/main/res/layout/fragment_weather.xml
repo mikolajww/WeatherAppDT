@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context=".fragment.WeatherFragment" android:id="@+id/scrollView2">
     <androidx.constraintlayout.widget.ConstraintLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="match_parent" android:id="@+id/constraint_layout">
         <ProgressBar
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="219dp"
+                android:layout_height="55dp"
                 android:indeterminate="true" android:id="@+id/loading_progress_bar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -65,4 +62,3 @@
                 android:layout_marginEnd="8dp" android:textAlignment="center" android:textSize="18sp"
                 tools:text="TextView"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>

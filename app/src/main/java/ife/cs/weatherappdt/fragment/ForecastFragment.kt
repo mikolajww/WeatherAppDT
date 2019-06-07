@@ -29,7 +29,7 @@ class ForecastFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        println(activity)
+        println("Launched forecast fragment")
         if(verifyAvailableNetwork(requireParentFragment().requireActivity())) {
             GlobalScope.launch {
                 launchWithLoading {
@@ -92,7 +92,7 @@ class ForecastFragment : Fragment() {
     companion object {
 
         @JvmStatic
-        fun newInstance(cityName: String, countryCode: String) = WeatherFragment().apply {
+        fun newInstance(cityName: String, countryCode: String) = ForecastFragment().apply {
             arguments = Bundle().apply {
                 putString("CITYNAME", cityName)
                 putString("COUNTRYCODE", countryCode)

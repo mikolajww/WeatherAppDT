@@ -10,12 +10,12 @@
             android:layout_height="match_parent">
         <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" android:id="@+id/weather_frame_layout">
+                android:layout_height="match_parent" android:id="@+id/weather_frame_layout" android:layout_weight="1">
 
         </FrameLayout>
         <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" android:id="@+id/forecast_frame_layout">
+                android:layout_height="match_parent" android:id="@+id/forecast_frame_layout" android:layout_weight="1">
 
         </FrameLayout>
     </LinearLayout>
