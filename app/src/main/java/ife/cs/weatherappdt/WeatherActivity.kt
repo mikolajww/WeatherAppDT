@@ -1,34 +1,37 @@
 package ife.cs.weatherappdt
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
-import ife.cs.weatherappdt.api.OpenWeatherApiService
-import ife.cs.weatherappdt.api.responses.WeatherResponse
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentPagerAdapter
+import ife.cs.weatherappdt.data.dao.CityDao
+import ife.cs.weatherappdt.data.database.CityRoomDatabase
+import ife.cs.weatherappdt.data.model.City
 import ife.cs.weatherappdt.fragment.WeatherFragment
+import ife.cs.weatherappdt.fragment.WrapperFragment
 import kotlinx.android.synthetic.main.activity_weather.*
-import kotlinx.coroutines.*
-import okhttp3.Call
-import okhttp3.Callback
-import okhttp3.Response
-import java.io.IOException
+
 
 class WeatherActivity : AppCompatActivity() {
+
+    private val database by lazy {
+        CityRoomDatabase.getDatabase(applicationContext)
+    }
+    private lateinit var cityDao: CityDao
+    private lateinit var cities: List<City>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_weather)
-        if(verifyAvailableNetwork(this@WeatherActivity)) {
-        GlobalScope.launch{
+        cityDao = database.cityDao()
+        cities = cityDao.getAll().filter { it.selected }
+        viewPager!!.adapter =
+            object : FragmentPagerAdapter(supportFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+                override fun getItem(position: Int): Fragment {
+                    return WrapperFragment.newInstance(cities[position].name, cities[position].country)
+                }
 
-                OpenWeatherApiService.fetchCurrentWeather("Lodz", "pl", this@WeatherActivity).also { println(it) }
+                override fun getCount() = cities.size
             }
-
-        }
-        else {
-            Toast.makeText(this@WeatherActivity, "No internet connection, fetching previously saved data.", Toast.LENGTH_SHORT).show()
-            OpenWeatherApiService.readCurrentWeather("Lodz", "pl", this@WeatherActivity)
-            //read from file
-        }
     }
 }

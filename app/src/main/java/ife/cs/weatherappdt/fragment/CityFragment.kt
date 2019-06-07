@@ -36,6 +36,7 @@ class CityFragment : Fragment(), MyCityRecyclerViewAdapter.OnListFragmentInterac
         CityRoomDatabase.getDatabase(context!!)
     }
     private lateinit var cityDao: CityDao
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

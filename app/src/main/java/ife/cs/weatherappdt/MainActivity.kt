@@ -2,6 +2,7 @@ package ife.cs.weatherappdt
 
 // woda niezagazowana
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -16,6 +17,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentPagerAdapter
 import com.astrocalculator.AstroCalculator
 import com.astrocalculator.AstroDateTime
@@ -27,7 +29,7 @@ import kotlinx.android.synthetic.main.toolbar.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-fun verifyAvailableNetwork(activity: AppCompatActivity):Boolean {
+fun verifyAvailableNetwork(activity: FragmentActivity):Boolean {
     val connectivityManager = activity.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     val networkInfo = connectivityManager.activeNetworkInfo
     return  networkInfo != null && networkInfo.isConnected
