@@ -19,19 +19,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" android:layout_weight="1">
                 <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent" android:id="@+id/day1" android:layout_weight="1"
                         tools:text="Weekday"/>
                 <ImageView
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent" tools:src="@tools:sample/avatars[0]"
                         android:id="@+id/icon1" android:layout_weight="1"/>
                 <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent" android:id="@+id/desc1" android:layout_weight="1"
                         tools:text="Desc"/>
                 <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent" android:id="@+id/temp1" android:layout_weight="1"
                         tools:text="Temp"/>
             </LinearLayout>
@@ -40,20 +40,62 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" android:layout_weight="1">
                 <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent" android:id="@+id/day2" android:layout_weight="1"
                         tools:text="Weekday"/>
                 <ImageView
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent" tools:src="@tools:sample/avatars[0]"
                         android:id="@+id/icon2" android:layout_weight="1"/>
                 <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent" android:id="@+id/desc2" android:layout_weight="1"
                         tools:text="Desc"/>
                 <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent" android:id="@+id/temp2" android:layout_weight="1"
+                        tools:text="Temp"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" android:layout_weight="1">
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" android:id="@+id/day3" android:layout_weight="1"
+                        tools:text="Weekday"/>
+                <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" tools:src="@tools:sample/avatars[0]"
+                        android:id="@+id/icon3" android:layout_weight="1"/>
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" android:id="@+id/desc3" android:layout_weight="1"
+                        tools:text="Desc"/>
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" android:id="@+id/temp3" android:layout_weight="1"
+                        tools:text="Temp"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" android:layout_weight="1">
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" android:id="@+id/day4" android:layout_weight="1"
+                        tools:text="Weekday"/>
+                <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" tools:src="@tools:sample/avatars[0]"
+                        android:id="@+id/icon4" android:layout_weight="1"/>
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" android:id="@+id/desc4" android:layout_weight="1"
+                        tools:text="Desc"/>
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" android:id="@+id/temp4" android:layout_weight="1"
                         tools:text="Temp"/>
             </LinearLayout>
         </LinearLayout>

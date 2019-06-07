@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
 import ife.cs.weatherappdt.R
 import ife.cs.weatherappdt.api.OpenWeatherApiService
 import ife.cs.weatherappdt.api.responses.ForecastResponse
@@ -65,6 +66,39 @@ class ForecastFragment : Fragment() {
 //                println(parsedForecastList.get(1).main?.temp.toString())
                 temp1.text = parsedForecastList.get(0).main?.temp.toString()// + OpenWeatherApiService.getUnitSuffix()
                 temp2.text = parsedForecastList.get(1).main?.temp.toString()// + OpenWeatherApiService.getUnitSuffix()
+                println(parsedForecastList)
+                println(parsedForecastList.get(0).main?.temp.toString())
+                println(parsedForecastList.get(1).main?.temp.toString())
+
+
+
+                temp1.text = parsedForecastList.get(0).main?.temp.toString() + OpenWeatherApiService.getUnitSuffix()
+                desc1.text = parsedForecastList.get(0).weather?.get(0)?.description?.toUpperCase()
+                day1.text = parsedForecastList.get(0).dt_txt
+                Glide.with(icon1)
+                    .load("http://openweathermap.org/img/w/${parsedForecastList.get(0).weather?.get(0)?.icon ?: "01d"}.png")
+                    .into(icon1)
+
+                temp2.text = parsedForecastList.get(1).main?.temp.toString() + OpenWeatherApiService.getUnitSuffix()
+                desc2.text = parsedForecastList.get(1).weather?.get(0)?.description?.toUpperCase()
+                day2.text = parsedForecastList.get(1).dt_txt
+                Glide.with(icon2)
+                    .load("http://openweathermap.org/img/w/${parsedForecastList.get(1).weather?.get(0)?.icon ?: "01d"}.png")
+                    .into(icon2)
+
+                temp3.text = parsedForecastList.get(2).main?.temp.toString() + OpenWeatherApiService.getUnitSuffix()
+                desc3.text = parsedForecastList.get(2).weather?.get(0)?.description?.toUpperCase()
+                day3.text = parsedForecastList.get(2).dt_txt
+                Glide.with(icon3)
+                    .load("http://openweathermap.org/img/w/${parsedForecastList.get(2).weather?.get(0)?.icon ?: "01d"}.png")
+                    .into(icon3)
+
+                temp4.text = parsedForecastList.get(3).main?.temp.toString() + OpenWeatherApiService.getUnitSuffix()
+                desc4.text = parsedForecastList.get(3).weather?.get(0)?.description?.toUpperCase()
+                day4.text = parsedForecastList.get(3).dt_txt
+                Glide.with(icon4)
+                    .load("http://openweathermap.org/img/w/${parsedForecastList.get(3).weather?.get(0)?.icon ?: "01d"}.png")
+                    .into(icon4)
             }
         }
 
