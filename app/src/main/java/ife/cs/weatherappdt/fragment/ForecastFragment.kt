@@ -29,7 +29,6 @@ class ForecastFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        println("Launched forecast fragment")
         if(verifyAvailableNetwork(requireParentFragment().requireActivity())) {
             GlobalScope.launch {
                 launchWithLoading {
@@ -61,9 +60,9 @@ class ForecastFragment : Fragment() {
         with(forecastResponse) {
             activity?.runOnUiThread {
                 val parsedForecastList = OpenWeatherApiService.getParsedList(list)
-                println(parsedForecastList)
-                println(parsedForecastList.get(0).main?.temp.toString())
-                println(parsedForecastList.get(1).main?.temp.toString())
+//                println(parsedForecastList)
+//                println(parsedForecastList.get(0).main?.temp.toString())
+//                println(parsedForecastList.get(1).main?.temp.toString())
                 temp1.text = parsedForecastList.get(0).main?.temp.toString()// + OpenWeatherApiService.getUnitSuffix()
                 temp2.text = parsedForecastList.get(1).main?.temp.toString()// + OpenWeatherApiService.getUnitSuffix()
             }

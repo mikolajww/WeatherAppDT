@@ -22,7 +22,6 @@ class WeatherFragment : Fragment() {
 
     private lateinit var cityName: String
     private lateinit var countryCode: String
-    private lateinit var localContext: Context
 
     override fun onCreateView (
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,7 +37,7 @@ class WeatherFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        println(activity)
+
         if(verifyAvailableNetwork(requireParentFragment().requireActivity())) {
             GlobalScope.launch {
                 launchWithLoading {
@@ -83,7 +82,6 @@ class WeatherFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        localContext = context
         arguments?.getString("CITYNAME")?.let {
             cityName = it
         }

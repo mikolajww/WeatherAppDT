@@ -10,6 +10,7 @@ import ife.cs.weatherappdt.data.model.City
 import ife.cs.weatherappdt.fragment.WeatherFragment
 import ife.cs.weatherappdt.fragment.WrapperFragment
 import kotlinx.android.synthetic.main.activity_weather.*
+import java.sql.Wrapper
 
 
 class WeatherActivity : AppCompatActivity() {
@@ -19,19 +20,23 @@ class WeatherActivity : AppCompatActivity() {
     }
     private lateinit var cityDao: CityDao
     private lateinit var cities: List<City>
+    private var fragmentList: MutableList<WrapperFragment> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_weather)
         cityDao = database.cityDao()
         cities = cityDao.getAll().filter { it.selected }
+        cities.forEach {
+            fragmentList.add(WrapperFragment.newInstance(it.name, it.country))
+        }
         viewPager!!.adapter =
             object : FragmentPagerAdapter(supportFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
                 override fun getItem(position: Int): Fragment {
-                    return WrapperFragment.newInstance(cities[position].name, cities[position].country)
+                    return fragmentList[position]
                 }
 
-                override fun getCount() = cities.size
+                override fun getCount() = fragmentList.size
             }
     }
 }

@@ -81,5 +81,14 @@ class CityFragment : Fragment(), MyCityRecyclerViewAdapter.OnListFragmentInterac
         }
     }
 
-
+    override fun longInteract(position: Int): Boolean {
+        cachedCities.removeAt(position)
+        println("removed positon $position")
+        recyclerViewAdapter.setCities(cachedCities)
+        GlobalScope.launch {
+            cityDao.replaceAll(*cachedCities.toTypedArray())
+            println("Saved to DB!")
+        }
+        return true
+    }
 }

@@ -33,6 +33,9 @@ class MyCityRecyclerViewAdapter(
             setOnClickListener { v ->
                 mListener?.interact(position)
             }
+            setOnLongClickListener {
+                v -> mListener?.longInteract(position)!!
+            }
         }
     }
 
@@ -51,5 +54,6 @@ class MyCityRecyclerViewAdapter(
 
     interface OnListFragmentInteractionListener {
         fun interact(position: Int)
+        fun longInteract(position: Int): Boolean
     }
 }
