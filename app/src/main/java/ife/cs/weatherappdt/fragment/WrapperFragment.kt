@@ -34,12 +34,12 @@ class WrapperFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        println("Created wrapper in onCreate $cityName $countryCode")
+        //println("Created wrapper in onCreate $cityName $countryCode")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        println("Created wrapper in onViewCreated with $cityName $countryCode")
+        //println("Created wrapper in onViewCreated with $cityName $countryCode")
         childFragmentManager.beginTransaction()
             .replace(R.id.weather_frame_layout, weatherFragment )
             .replace(R.id.forecast_frame_layout, forecastFragment )
@@ -59,7 +59,8 @@ class WrapperFragment : Fragment() {
     companion object {
         @JvmStatic
         fun newInstance(cityName: String, countryCode: String):WrapperFragment {
-            println("WrapperFragment newInstance")
+            //println("WrapperFragment newInstance")
+
             return WrapperFragment().apply {
                 arguments = Bundle().apply {
                     putString("CITYNAME", cityName)
@@ -71,11 +72,11 @@ class WrapperFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        println("WrapperFragment onDestroyView")
+        //println("WrapperFragment onDestroyView")
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        println("WrapperFragment onDestroy")
+        //println("WrapperFragment onDestroy")
     }
 }

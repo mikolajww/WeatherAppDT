@@ -3,12 +3,10 @@ package ife.cs.weatherappdt.fragment
 
 import android.content.Context
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import ife.cs.weatherappdt.R
@@ -17,34 +15,57 @@ import ife.cs.weatherappdt.api.responses.ForecastResponse
 import ife.cs.weatherappdt.verifyAvailableNetwork
 import kotlinx.android.synthetic.main.fragment_forecast.*
 import kotlinx.coroutines.*
+import kotlin.coroutines.CoroutineContext
 
-class ForecastFragment : Fragment() {
+class ForecastFragment : Fragment(), CoroutineScope {
+
+    private lateinit var job: Job
+    override val coroutineContext: CoroutineContext
+        get() = job + Dispatchers.Main
 
     private lateinit var cityName: String
     private lateinit var countryCode: String
     private lateinit var localContext: Context
-    private val job = Job()
-    private val uiScope = CoroutineScope(Dispatchers.Main + job)
-    private val ioScope = CoroutineScope(Dispatchers.IO + job)
+    private var cachedResponse: ForecastResponse? =  null
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        job = Job()
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+
+    override fun onResume() {
+        super.onResume()
+        job = Job()
+        if (cachedResponse != null) {
+            println("Using cached response for $cityName $countryCode")
+            parseForecastResponse(cachedResponse)
+            return
+        }
+        println("Resumend $cityName $countryCode")
         if(verifyAvailableNetwork(requireParentFragment().requireActivity())) {
-            ioScope.launch {
+            launch {
+                println("Loading $cityName $countryCode")
                 launchWithLoading {
-                    val response = OpenWeatherApiService.fetch5DayForecast(cityName, countryCode, requireParentFragment().requireActivity())
-                    parseForecastResponse(response)
+                    cachedResponse = withContext(Dispatchers.IO) {
+                        OpenWeatherApiService.fetch5DayForecast(
+                            cityName,
+                            countryCode,
+                            requireParentFragment().requireActivity()
+                        )
+                    }
+                    parseForecastResponse(cachedResponse)
                 }
             }
         }
         else {
             Toast.makeText(requireParentFragment().requireActivity(), "No internet connection, fetching previously saved data.", Toast.LENGTH_SHORT).show()
-            var response = OpenWeatherApiService.read5DayForecast(cityName, countryCode, requireParentFragment().requireActivity())
-            parseForecastResponse(response)
+            launch {
+                launchWithLoading {
+                    var response = async(Dispatchers.IO) { OpenWeatherApiService.read5DayForecast(cityName, countryCode, requireParentFragment().requireActivity()) }
+                    parseForecastResponse(response.await())
+                }
+            }
             //read from file
         }
     }
@@ -57,13 +78,13 @@ class ForecastFragment : Fragment() {
     }
 
     private fun parseForecastResponse(forecastResponse: ForecastResponse?) {
+        println("Processing $cityName $countryCode")
         if (forecastResponse == null) {
             Toast.makeText(activity, "Failed to obtain data!", Toast.LENGTH_SHORT).show()
             return
         }
         with(forecastResponse) {
             val parsedForecastList = OpenWeatherApiService.getParsedList(list)
-            uiScope.launch {
                 temp1.text = parsedForecastList.get(0).main?.temp.toString() + OpenWeatherApiService.getUnitSuffix()
                 desc1.text = parsedForecastList.get(0).weather?.get(0)?.description?.toUpperCase()
                 day1.text = OpenWeatherApiService.getWeekdayName(parsedForecastList.get(0).dt_txt.toString())
@@ -91,16 +112,20 @@ class ForecastFragment : Fragment() {
                 Glide.with(icon4)
                     .load("http://openweathermap.org/img/w/${parsedForecastList.get(3).weather?.get(0)?.icon ?: "01d"}.png")
                     .into(icon4)
-            }
+
+                println("Done processing $cityName $countryCode")
+
         }
-
-
     }
 
     private suspend fun launchWithLoading(f:suspend () -> Unit) {
-        uiScope.launch { loading_progress_bar1.visibility = View.VISIBLE }
+        if(view == null) {
+            println("View is null!")
+            return
+        }
+        loading_progress_bar1.visibility = View.VISIBLE
         f.invoke()
-        uiScope.launch { loading_progress_bar1.visibility = View.GONE }
+        loading_progress_bar1.visibility = View.GONE
     }
 
     override fun onAttach(context: Context) {
@@ -114,8 +139,10 @@ class ForecastFragment : Fragment() {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    @ExperimentalCoroutinesApi
+    override fun onPause() {
+        super.onPause()
+        println("Cancelled $cityName $countryCode")
         job.cancel()
     }
     companion object {
