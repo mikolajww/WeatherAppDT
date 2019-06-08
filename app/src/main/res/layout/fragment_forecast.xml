@@ -21,7 +21,7 @@
                 <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" android:id="@+id/day1" android:layout_weight="1"
-                        tools:text="Weekday"/>
+                        tools:text="Weekday" android:textSize="24sp"/>
                 <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" tools:src="@tools:sample/avatars[0]"
@@ -42,7 +42,7 @@
                 <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" android:id="@+id/day2" android:layout_weight="1"
-                        tools:text="Weekday"/>
+                        tools:text="Weekday" android:textSize="24sp"/>
                 <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" tools:src="@tools:sample/avatars[0]"
@@ -63,7 +63,7 @@
                 <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" android:id="@+id/day3" android:layout_weight="1"
-                        tools:text="Weekday"/>
+                        tools:text="Weekday" android:textSize="24sp"/>
                 <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" tools:src="@tools:sample/avatars[0]"
@@ -84,7 +84,7 @@
                 <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" android:id="@+id/day4" android:layout_weight="1"
-                        tools:text="Weekday"/>
+                        tools:text="Weekday" android:textSize="24sp"/>
                 <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" tools:src="@tools:sample/avatars[0]"
