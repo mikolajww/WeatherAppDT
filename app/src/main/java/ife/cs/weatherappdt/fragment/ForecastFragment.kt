@@ -3,6 +3,7 @@ package ife.cs.weatherappdt.fragment
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,14 +16,16 @@ import ife.cs.weatherappdt.api.OpenWeatherApiService
 import ife.cs.weatherappdt.api.responses.ForecastResponse
 import ife.cs.weatherappdt.verifyAvailableNetwork
 import kotlinx.android.synthetic.main.fragment_forecast.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class ForecastFragment : Fragment() {
 
     private lateinit var cityName: String
     private lateinit var countryCode: String
     private lateinit var localContext: Context
+    private val job = Job()
+    private val uiScope = CoroutineScope(Dispatchers.Main + job)
+    private val ioScope = CoroutineScope(Dispatchers.IO + job)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -31,7 +34,7 @@ class ForecastFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         if(verifyAvailableNetwork(requireParentFragment().requireActivity())) {
-            GlobalScope.launch {
+            ioScope.launch {
                 launchWithLoading {
                     val response = OpenWeatherApiService.fetch5DayForecast(cityName, countryCode, requireParentFragment().requireActivity())
                     parseForecastResponse(response)
@@ -59,8 +62,8 @@ class ForecastFragment : Fragment() {
             return
         }
         with(forecastResponse) {
-            activity?.runOnUiThread {
-                val parsedForecastList = OpenWeatherApiService.getParsedList(list)
+            val parsedForecastList = OpenWeatherApiService.getParsedList(list)
+            uiScope.launch {
 //                println(parsedForecastList)
 //                println(parsedForecastList.get(0).main?.temp.toString())
 //                println(parsedForecastList.get(1).main?.temp.toString())
@@ -106,9 +109,9 @@ class ForecastFragment : Fragment() {
     }
 
     private suspend fun launchWithLoading(f:suspend () -> Unit) {
-        activity?.runOnUiThread { loading_progress_bar1.visibility = View.VISIBLE }
+        uiScope.launch { loading_progress_bar1.visibility = View.VISIBLE }
         f.invoke()
-        activity?.runOnUiThread { loading_progress_bar1.visibility = View.GONE }
+        uiScope.launch { loading_progress_bar1.visibility = View.GONE }
     }
 
     override fun onAttach(context: Context) {
@@ -122,6 +125,10 @@ class ForecastFragment : Fragment() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        job.cancel()
+    }
     companion object {
 
         @JvmStatic

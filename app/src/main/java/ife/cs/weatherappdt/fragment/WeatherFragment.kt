@@ -15,13 +15,15 @@ import ife.cs.weatherappdt.api.OpenWeatherApiService
 import ife.cs.weatherappdt.api.responses.WeatherResponse
 import ife.cs.weatherappdt.verifyAvailableNetwork
 import kotlinx.android.synthetic.main.fragment_weather.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class WeatherFragment : Fragment() {
 
     private lateinit var cityName: String
     private lateinit var countryCode: String
+    private val job = Job()
+    private val uiScope = CoroutineScope(Dispatchers.Main + job)
+    private val ioScope = CoroutineScope(Dispatchers.IO + job)
 
     override fun onCreateView (
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,7 +41,7 @@ class WeatherFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         if(verifyAvailableNetwork(requireParentFragment().requireActivity())) {
-            GlobalScope.launch {
+            ioScope.launch {
                 launchWithLoading {
                     val response = OpenWeatherApiService.fetchCurrentWeather(cityName, countryCode, requireParentFragment().requireActivity())
                     parseWeatherResponse(response)
@@ -60,7 +62,7 @@ class WeatherFragment : Fragment() {
             return
         }
         with(weatherResponse) {
-            activity?.runOnUiThread {
+            uiScope.launch {
                 city_name_weather.text = name
                 city_latitude.text = "Lat: ${coord?.lat.toString()}"
                 city_longitude.text = "Lon: ${coord?.lon.toString()}"
@@ -75,9 +77,9 @@ class WeatherFragment : Fragment() {
 
     }
     private suspend fun launchWithLoading(f:suspend () -> Unit) {
-        activity?.runOnUiThread { loading_progress_bar.visibility = View.VISIBLE }
+        uiScope.launch { loading_progress_bar.visibility = View.VISIBLE }
         f.invoke()
-        activity?.runOnUiThread { loading_progress_bar.visibility = View.GONE }
+        uiScope.launch { loading_progress_bar.visibility = View.GONE }
     }
 
     override fun onAttach(context: Context) {
@@ -88,6 +90,11 @@ class WeatherFragment : Fragment() {
         arguments?.getString("COUNTRYCODE")?.let {
             countryCode = it
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        job.cancel()
     }
 
     companion object {
