@@ -7,11 +7,10 @@ import android.text.InputType
 import android.text.Spanned
 import android.widget.EditText
 import android.widget.Toast
-import androidx.preference.EditTextPreference
-import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.SeekBarPreference
+import androidx.preference.*
 import ife.cs.weatherappdt.R
+import ife.cs.weatherappdt.api.OpenWeatherApiService
+import java.lang.RuntimeException
 
 class PreferencesFragment: PreferenceFragmentCompat() {
 
@@ -29,7 +28,18 @@ class PreferencesFragment: PreferenceFragmentCompat() {
                 true
             }
         }
-
+        with(findPreference<ListPreference>("unit")!!) {
+            summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
+            onPreferenceChangeListener = Preference.OnPreferenceChangeListener { preference, newValue ->
+                OpenWeatherApiService.unit = when(newValue as String) {
+                    "Kelvin" ->  OpenWeatherApiService.Units.K
+                    "Celsius" -> OpenWeatherApiService.Units.C
+                    "Fahrenheit" -> OpenWeatherApiService.Units.F
+                    else -> throw RuntimeException("Unit not supported!")
+                }
+                true
+            }
+        }
     }
 
     private inner class NumericEditTextListener : EditTextPreference.OnBindEditTextListener {
