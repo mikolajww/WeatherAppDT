@@ -24,7 +24,6 @@ class WeatherFragment : Fragment(), CoroutineScope {
         get() = job + Dispatchers.Main
     private lateinit var cityName: String
     private lateinit var countryCode: String
-    private var shouldFetch: Boolean = true
     private var cachedResponse: WeatherResponse? = null
 
     override fun onCreateView (
@@ -48,7 +47,11 @@ class WeatherFragment : Fragment(), CoroutineScope {
             parseWeatherResponse(cachedResponse)
             return
         }
-        if(verifyAvailableNetwork(requireParentFragment().requireActivity())) {
+        displayWeather()
+    }
+
+    fun displayWeather() {
+        if (verifyAvailableNetwork(requireParentFragment().requireActivity())) {
             launch {
                 launchWithLoading {
                     cachedResponse = withContext(Dispatchers.IO) {
@@ -61,11 +64,20 @@ class WeatherFragment : Fragment(), CoroutineScope {
                     parseWeatherResponse(cachedResponse)
                 }
             }
-        }
-        else {
+        } else {
             launch {
-                Toast.makeText(requireParentFragment().requireActivity(), "No internet connection, fetching previously saved data.", Toast.LENGTH_SHORT).show()
-                val response = async(Dispatchers.IO) { OpenWeatherApiService.readCurrentWeather(cityName, countryCode, requireParentFragment().requireActivity()) }
+                Toast.makeText(
+                    requireParentFragment().requireActivity(),
+                    "No internet connection, fetching previously saved data.",
+                    Toast.LENGTH_SHORT
+                ).show()
+                val response = async(Dispatchers.IO) {
+                    OpenWeatherApiService.readCurrentWeather(
+                        cityName,
+                        countryCode,
+                        requireParentFragment().requireActivity()
+                    )
+                }
                 parseWeatherResponse(response.await())
                 //read from file
             }

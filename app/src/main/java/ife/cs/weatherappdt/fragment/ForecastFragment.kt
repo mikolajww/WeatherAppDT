@@ -43,7 +43,11 @@ class ForecastFragment : Fragment(), CoroutineScope {
             return
         }
         println("Resumend $cityName $countryCode")
-        if(verifyAvailableNetwork(requireParentFragment().requireActivity())) {
+        displayForecast()
+    }
+
+    fun displayForecast() {
+        if (verifyAvailableNetwork(requireParentFragment().requireActivity())) {
             launch {
                 println("Loading $cityName $countryCode")
                 launchWithLoading {
@@ -57,12 +61,21 @@ class ForecastFragment : Fragment(), CoroutineScope {
                     parseForecastResponse(cachedResponse)
                 }
             }
-        }
-        else {
-            Toast.makeText(requireParentFragment().requireActivity(), "No internet connection, fetching previously saved data.", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(
+                requireParentFragment().requireActivity(),
+                "No internet connection, fetching previously saved data.",
+                Toast.LENGTH_SHORT
+            ).show()
             launch {
                 launchWithLoading {
-                    var response = async(Dispatchers.IO) { OpenWeatherApiService.read5DayForecast(cityName, countryCode, requireParentFragment().requireActivity()) }
+                    var response = async(Dispatchers.IO) {
+                        OpenWeatherApiService.read5DayForecast(
+                            cityName,
+                            countryCode,
+                            requireParentFragment().requireActivity()
+                        )
+                    }
                     parseForecastResponse(response.await())
                 }
             }
