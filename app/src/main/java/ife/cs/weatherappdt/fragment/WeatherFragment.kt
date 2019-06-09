@@ -86,6 +86,8 @@ class WeatherFragment : Fragment(), CoroutineScope {
             Glide.with(current_weather_icon)
                 .load("http://openweathermap.org/img/w/${weather?.get(0)?.icon ?: "01d"}.png")
                 .into(current_weather_icon)
+            humidity_now.text = "Humidity: ${main?.humidity.toString()} %"
+            pressure_now.text = "Pressure: ${main?.pressure.toString()} hPa"
         }
 
 

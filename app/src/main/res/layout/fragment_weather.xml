@@ -61,4 +61,28 @@
                 android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginEnd="8dp" android:textAlignment="center" android:textSize="18sp"
                 tools:text="TextView"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/weather_description"
+            android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/loading_progress_bar"
+            app:layout_constraintVertical_bias="0.0">
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/pressure_now" android:layout_marginEnd="92dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                tools:text="TextView" android:textSize="18sp" android:layout_weight="1"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/humidity_now" android:layout_marginTop="8dp"
+                android:layout_marginStart="8dp" android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                tools:text="TextView" android:textSize="18sp" android:layout_weight="1"/>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
