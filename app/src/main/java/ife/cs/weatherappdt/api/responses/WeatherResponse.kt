@@ -1,7 +1,10 @@
 package ife.cs.weatherappdt.api.responses
 
 import com.beust.klaxon.Json
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class WeatherResponse(
     val base: String? = null, // stations
     val clouds: Clouds? = null,
@@ -19,15 +22,16 @@ data class WeatherResponse(
     val rain: Rain? = null,
     val snow: Snow? = null
 ) {
+    @Serializable
     data class Wind(
         val deg: Double? = null, // 240
         val speed: Double? = null // 5.1
     )
-
+    @Serializable
     data class Clouds(
         val all: Int? = null // 0
     )
-
+    @Serializable
     data class Sys(
         val country: String? = null, // PL
         val id: Int? = null, // 1706
@@ -36,12 +40,12 @@ data class WeatherResponse(
         val sunset: Int? = null, // 1558896176
         val type: Int? = null // 1
     )
-
+    @Serializable
     data class Coord(
         val lat: Double? = null, // 51.75
         val lon: Double? = null // 19.47
     )
-
+    @Serializable
     data class Main(
         val humidity: Int? = null, // 45
         val pressure: Int? = null, // 1011
@@ -49,21 +53,23 @@ data class WeatherResponse(
         val temp_max: Double? = null, // 294.26
         val temp_min: Double? = null // 292.59
     )
-
+    @Serializable
     data class Weather(
         val description: String? = null, // clear sky
         val icon: String? = null, // 01d
         val id: Int? = null, // 800
         val main: String? = null // Clear
     )
-
+    @Serializable
     data class Rain(
         @Json(name = "3h")
+        @SerialName(value = "3h")
         val threeH: Double? = null // 1.812
     )
-
+    @Serializable
     data class Snow(
         @Json(name = "3h")
+        @SerialName(value = "3h")
         val threeH: Double? = null
     )
 }

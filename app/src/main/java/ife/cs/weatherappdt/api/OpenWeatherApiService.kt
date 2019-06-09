@@ -8,6 +8,8 @@ import ife.cs.weatherappdt.MainActivity
 import ife.cs.weatherappdt.api.responses.ForecastResponse
 import ife.cs.weatherappdt.api.responses.WeatherResponse
 import kotlinx.coroutines.*
+import kotlinx.serialization.UnstableDefault
+import kotlinx.serialization.json.Json
 import okhttp3.*
 import java.io.IOException
 import java.io.StringReader
@@ -45,6 +47,7 @@ suspend fun OkHttpClient.execute(request: Request): Response {
 }
 
 
+@UnstableDefault
 object OpenWeatherApiService {
     private val APPID = "8835e5a77fa77f31382ae1778b90042d"
     private val currentWeatherUrl = "http://api.openweathermap.org/data/2.5/weather?q=**CITY**,**COUNTRY**&APPID=$APPID"
@@ -62,9 +65,10 @@ object OpenWeatherApiService {
             val request = Request.Builder().url(url).build()
             val response = client.execute(request)
             val body = response.body()?.string() ?: return null
-            val obj = Klaxon().parseJsonObject(StringReader(body))
+            //val obj = Klaxon().parseJsonObject(StringReader(body))
             createFile("${city}_${country}CurrentWeather.json", body, context)
-            return Klaxon().parseFromJsonObject<WeatherResponse>(obj)
+            //return Klaxon().parseFromJsonObject<WeatherResponse>(obj)
+            return Json.parse(WeatherResponse.serializer(), body)
     }
 
     suspend fun fetch5DayForecast(city: String, country: String, context: Context): ForecastResponse? {
@@ -74,9 +78,10 @@ object OpenWeatherApiService {
         val request = Request.Builder().url(url).build()
         val response = client.execute(request)
         val body = response.body()?.string() ?: return null
-        val obj = Klaxon().parseJsonObject(StringReader(body))
+        //val obj = Klaxon().parseJsonObject(StringReader(body))
         createFile("${city}_${country}5DayForecast.json", body, context)
-        return Klaxon().parseFromJsonObject<ForecastResponse>(obj)
+        //return Klaxon().parseFromJsonObject<ForecastResponse>(obj)
+        return Json.parse(ForecastResponse.serializer(), body)
     }
 
     fun readCurrentWeather(city:String, country:String, context: Context): WeatherResponse? {
