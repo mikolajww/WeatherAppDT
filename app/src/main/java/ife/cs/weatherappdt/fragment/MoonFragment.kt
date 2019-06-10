@@ -41,6 +41,7 @@ class MoonFragment : Fragment() {
     }
 
     fun displayMoonInfo() {
+        if(!isAdded) return
         for (tv in getAllTextViews()) {
             tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, resources.getDimension(R.dimen.textsize))
         }

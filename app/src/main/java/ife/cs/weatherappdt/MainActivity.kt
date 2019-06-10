@@ -82,10 +82,6 @@ class MainActivity : AppCompatActivity(), MoonFragment.OnGetMoonInfo, SunFragmen
             10000L,
             (sharedPreferences.getInt("refresh_time", 1) * 60 * 1000).toLong()
         )
-
-        weatherButton?.setOnClickListener {
-            startActivity(Intent(this@MainActivity, TestWeatherActivity::class.java))
-        }
     }
 
     private fun setupViewPager() {
@@ -156,6 +152,10 @@ class MainActivity : AppCompatActivity(), MoonFragment.OnGetMoonInfo, SunFragmen
         return when (item?.itemId) {
             R.id.preferences_menu_button -> {
                 startActivity(Intent(this, PreferencesActivity::class.java))
+                true
+            }
+            R.id.weather_menu_button -> {
+                startActivity(Intent(this, WeatherActivity::class.java))
                 true
             }
             else -> {

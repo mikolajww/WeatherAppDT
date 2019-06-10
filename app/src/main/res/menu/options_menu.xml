@@ -10,4 +10,11 @@
         android:title="Preferences"
         app:showAsAction="withText"
         tools:icon="@android:drawable/ic_menu_manage" />
+    <item
+            android:id="@+id/weather_menu_button"
+            android:checkable="false"
+            android:enabled="true"
+            android:title="Weather"
+            app:showAsAction="withText"
+            tools:icon="@android:drawable/ic_menu_manage" />
 </menu>

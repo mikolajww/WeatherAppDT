@@ -21,7 +21,7 @@
                 <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" android:id="@+id/day1" android:layout_weight="1"
-                        tools:text="Weekday" android:textSize="24sp"/>
+                        tools:text="Weekday" android:textSize="24sp" android:textAlignment="center"/>
                 <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" tools:src="@tools:sample/avatars[0]"
@@ -29,11 +29,11 @@
                 <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" android:id="@+id/desc1" android:layout_weight="1"
-                        tools:text="Desc"/>
+                        tools:text="Desc" android:textAlignment="center"/>
                 <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" android:id="@+id/temp1" android:layout_weight="1"
-                        tools:text="Temp"/>
+                        tools:text="Temp" android:textAlignment="center"/>
             </LinearLayout>
             <LinearLayout
                     android:orientation="horizontal"
@@ -42,7 +42,7 @@
                 <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" android:id="@+id/day2" android:layout_weight="1"
-                        tools:text="Weekday" android:textSize="24sp"/>
+                        tools:text="Weekday" android:textSize="24sp" android:textAlignment="center"/>
                 <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" tools:src="@tools:sample/avatars[0]"
@@ -50,11 +50,11 @@
                 <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" android:id="@+id/desc2" android:layout_weight="1"
-                        tools:text="Desc"/>
+                        tools:text="Desc" android:textAlignment="center"/>
                 <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" android:id="@+id/temp2" android:layout_weight="1"
-                        tools:text="Temp"/>
+                        tools:text="Temp" android:textAlignment="center"/>
             </LinearLayout>
             <LinearLayout
                     android:orientation="horizontal"
@@ -63,7 +63,7 @@
                 <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" android:id="@+id/day3" android:layout_weight="1"
-                        tools:text="Weekday" android:textSize="24sp"/>
+                        tools:text="Weekday" android:textSize="24sp" android:textAlignment="center"/>
                 <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" tools:src="@tools:sample/avatars[0]"
@@ -71,11 +71,11 @@
                 <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" android:id="@+id/desc3" android:layout_weight="1"
-                        tools:text="Desc"/>
+                        tools:text="Desc" android:textAlignment="center"/>
                 <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" android:id="@+id/temp3" android:layout_weight="1"
-                        tools:text="Temp"/>
+                        tools:text="Temp" android:textAlignment="center"/>
             </LinearLayout>
             <LinearLayout
                     android:orientation="horizontal"
@@ -84,7 +84,7 @@
                 <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" android:id="@+id/day4" android:layout_weight="1"
-                        tools:text="Weekday" android:textSize="24sp"/>
+                        tools:text="Weekday" android:textSize="24sp" android:textAlignment="center"/>
                 <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" tools:src="@tools:sample/avatars[0]"
@@ -92,11 +92,11 @@
                 <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" android:id="@+id/desc4" android:layout_weight="1"
-                        tools:text="Desc"/>
+                        tools:text="Desc" android:textAlignment="center"/>
                 <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" android:id="@+id/temp4" android:layout_weight="1"
-                        tools:text="Temp"/>
+                        tools:text="Temp" android:textAlignment="center"/>
             </LinearLayout>
         </LinearLayout>
         <ProgressBar
