@@ -2,6 +2,7 @@ package ife.cs.weatherappdt.api
 
 import android.content.Context
 import android.net.ConnectivityManager
+import android.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatActivity
 import com.beust.klaxon.Klaxon
 import ife.cs.weatherappdt.MainActivity
@@ -16,6 +17,7 @@ import java.io.StringReader
 import java.time.LocalDateTime
 import java.util.*
 import java.io.*
+import java.lang.RuntimeException
 import java.text.SimpleDateFormat
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
@@ -46,6 +48,10 @@ suspend fun OkHttpClient.execute(request: Request): Response {
     return call.await()
 }
 
+fun Double.KToC() = this - 273.15
+fun Double.KToF() = this * 1.8 - 459.67
+fun Double.CToF() = this * 1.8 + 32
+fun Double.FToC() = (this - 32)/1.8
 
 @UnstableDefault
 object OpenWeatherApiService {
@@ -59,22 +65,29 @@ object OpenWeatherApiService {
     var unit: Units = OpenWeatherApiService.Units.C
 
     suspend fun fetchCurrentWeather(city:String, country:String, context: Context): WeatherResponse? {
-            val url = currentWeatherUrl.replace("**CITY**", city)
-                .replace("**COUNTRY**", country)
-                .setUnit(unit)
-            val request = Request.Builder().url(url).build()
-            val response = client.execute(request)
-            val body = response.body()?.string() ?: return null
-            //val obj = Klaxon().parseJsonObject(StringReader(body))
-            createFile("${city}_${country}CurrentWeather.json", body, context)
-            //return Klaxon().parseFromJsonObject<WeatherResponse>(obj)
-            return Json.parse(WeatherResponse.serializer(), body)
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+        val unitString = sharedPreferences.getString("unit", "Celsius")
+        unit = stringToUnit(unitString!!)
+        val url = currentWeatherUrl.replace("**CITY**", city)
+            .replace("**COUNTRY**", country)
+            //.setUnit(unit)
+        val request = Request.Builder().url(url).build()
+        val response = client.execute(request)
+        val body = response.body()?.string() ?: return null
+        println(body)
+        //val obj = Klaxon().parseJsonObject(StringReader(body))
+        createFile("${city}_${country}CurrentWeather.json", body, context)
+        //return Klaxon().parseFromJsonObject<WeatherResponse>(obj)
+        return Json.parse(WeatherResponse.serializer(), body)
     }
 
     suspend fun fetch5DayForecast(city: String, country: String, context: Context): ForecastResponse? {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+        val unitString = sharedPreferences.getString("unit", "Celsius")
+        unit = stringToUnit(unitString!!)
         val url = forecast5DayUrl.replace("**CITY**", city)
                                  .replace("**COUNTRY**", country)
-                                 .setUnit(unit)
+                                 //.setUnit(unit)
         val request = Request.Builder().url(url).build()
         val response = client.execute(request)
         val body = response.body()?.string() ?: return null
@@ -85,20 +98,24 @@ object OpenWeatherApiService {
     }
 
     fun readCurrentWeather(city:String, country:String, context: Context): WeatherResponse? {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+        val unitString = sharedPreferences.getString("unit", "Celsius")
+        unit = stringToUnit(unitString!!)
         return try {
-            val body = readFromFile("${city}_${country}CurrentWeather.json", context)
-            val obj = Klaxon().parseJsonObject(StringReader(body))
-            Klaxon().parseFromJsonObject<WeatherResponse>(obj)
+            val body = readFromFile("${city}_${country}CurrentWeather.json", context) ?: return null
+            return Json.parse(WeatherResponse.serializer(), body)
         }catch (e: FileNotFoundException) {
             null
         }
     }
 
     fun read5DayForecast(city: String, country: String, context: Context): ForecastResponse? {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+        val unitString = sharedPreferences.getString("unit", "Celsius")
+        unit = stringToUnit(unitString!!)
         return try {
-            val body = readFromFile("${city}_${country}5DayForecast.json", context)
-            val obj = Klaxon().parseJsonObject(StringReader(body))
-            Klaxon().parseFromJsonObject<ForecastResponse>(obj)
+            val body = readFromFile("${city}_${country}5DayForecast.json", context) ?: return null
+            return Json.parse(ForecastResponse.serializer(), body)
         }catch (e: FileNotFoundException) {
             null
         }
@@ -156,6 +173,15 @@ object OpenWeatherApiService {
         OpenWeatherApiService.Units.K -> "K"
     }
 
+    fun getCorrectTemp(temp: Double?): Double? {
+        if(temp == null) return null
+        return when(unit) {
+            OpenWeatherApiService.Units.C -> temp.KToC()
+            OpenWeatherApiService.Units.F -> temp.KToF()
+            OpenWeatherApiService.Units.K -> temp
+        }
+    }
+
     private fun createFile(fileName: String?, body: String?, context:Context) {
         context.openFileOutput(fileName, Context.MODE_PRIVATE).use {
             if (body != null) {
@@ -163,6 +189,7 @@ object OpenWeatherApiService {
             }
         }
     }
+
     @Throws(FileNotFoundException::class)
     private fun readFromFile(fileName: String?, context: Context): String? {
         val ctx = context.applicationContext
@@ -170,5 +197,14 @@ object OpenWeatherApiService {
         val inputStreamReader = InputStreamReader(fileInputStream)
         val bufferedReader = BufferedReader(inputStreamReader)
         return bufferedReader.readLine()
+    }
+
+    private fun stringToUnit(string: String): Units {
+        return when(string) {
+            "Kelvin" ->  OpenWeatherApiService.Units.K
+            "Celsius" -> OpenWeatherApiService.Units.C
+            "Fahrenheit" -> OpenWeatherApiService.Units.F
+            else -> throw RuntimeException("Unit not supported!")
+        }
     }
 }

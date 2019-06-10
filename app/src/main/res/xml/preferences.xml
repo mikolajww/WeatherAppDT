@@ -28,7 +28,7 @@
             app:key="refresh_time"
             app:title="Update Every"/>
         <ListPreference
-                android:defaultValue="true"
+                android:defaultValue="false"
                 android:title="Temperature Unit" android:entries="@array/unit_list"
                 android:entryValues="@array/unit_list" android:key="unit"/>
 

@@ -64,7 +64,10 @@ data class WeatherResponse(
     data class Rain(
         @Json(name = "3h")
         @SerialName(value = "3h")
-        val threeH: Double? = null // 1.812
+        val threeH: Double? = null, // 1.812
+        @Json(name = "1h")
+        @SerialName(value = "1h")
+        val oneH: Double? = null
     )
     @Serializable
     data class Snow(

@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide
 import ife.cs.weatherappdt.R
 import ife.cs.weatherappdt.api.OpenWeatherApiService
 import ife.cs.weatherappdt.api.responses.WeatherResponse
+import ife.cs.weatherappdt.format
 import ife.cs.weatherappdt.verifyAvailableNetwork
 import kotlinx.android.synthetic.main.fragment_weather.*
 import kotlinx.coroutines.*
@@ -93,7 +94,7 @@ class WeatherFragment : Fragment(), CoroutineScope {
             city_name_weather.text = name
             city_latitude.text = "Lat: ${coord?.lat.toString()}"
             city_longitude.text = "Lon: ${coord?.lon.toString()}"
-            temperature_now.text = main?.temp.toString() + OpenWeatherApiService.getUnitSuffix()
+            temperature_now.text = OpenWeatherApiService.getCorrectTemp(main?.temp)?.format(2) + OpenWeatherApiService.getUnitSuffix()
             weather_description.text = weather?.get(0)?.description?.toUpperCase()
             Glide.with(current_weather_icon)
                 .load("http://openweathermap.org/img/w/${weather?.get(0)?.icon ?: "01d"}.png")

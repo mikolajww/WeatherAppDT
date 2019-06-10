@@ -37,10 +37,6 @@ fun verifyAvailableNetwork(activity: FragmentActivity):Boolean {
 
 fun Double.format(digits: Int) = java.lang.String.format("%.${digits}f", this)
 
-fun Double.KToC() = this - 273.15
-fun Double.KToF() = this * 1.8 - 459.67
-fun Double.CToF() = this * 1.8 + 32
-fun Double.FToC() = (this - 32)/1.8
 
 class MainActivity : AppCompatActivity(), MoonFragment.OnGetMoonInfo, SunFragment.OnGetSunInfo {
 

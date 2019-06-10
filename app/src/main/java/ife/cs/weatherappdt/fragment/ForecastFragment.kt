@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide
 import ife.cs.weatherappdt.R
 import ife.cs.weatherappdt.api.OpenWeatherApiService
 import ife.cs.weatherappdt.api.responses.ForecastResponse
+import ife.cs.weatherappdt.format
 import ife.cs.weatherappdt.verifyAvailableNetwork
 import kotlinx.android.synthetic.main.fragment_forecast.*
 import kotlinx.coroutines.*
@@ -98,28 +99,28 @@ class ForecastFragment : Fragment(), CoroutineScope {
         }
         with(forecastResponse) {
             val parsedForecastList = OpenWeatherApiService.getParsedList(list)
-                temp1.text = parsedForecastList.get(0).main?.temp.toString() + OpenWeatherApiService.getUnitSuffix()
+                temp1.text = OpenWeatherApiService.getCorrectTemp(parsedForecastList.get(0).main?.temp)?.format(2) + OpenWeatherApiService.getUnitSuffix()
                 desc1.text = parsedForecastList.get(0).weather?.get(0)?.description?.toUpperCase()
                 day1.text = OpenWeatherApiService.getWeekdayName(parsedForecastList.get(0).dt_txt.toString())
                 Glide.with(icon1)
                     .load("http://openweathermap.org/img/w/${parsedForecastList.get(0).weather?.get(0)?.icon ?: "01d"}.png")
                     .into(icon1)
 
-                temp2.text = parsedForecastList.get(1).main?.temp.toString() + OpenWeatherApiService.getUnitSuffix()
+                temp2.text = OpenWeatherApiService.getCorrectTemp(parsedForecastList.get(1).main?.temp)?.format(2) + OpenWeatherApiService.getUnitSuffix()
                 desc2.text = parsedForecastList.get(1).weather?.get(0)?.description?.toUpperCase()
                 day2.text = OpenWeatherApiService.getWeekdayName(parsedForecastList.get(1).dt_txt.toString())
                 Glide.with(icon2)
                     .load("http://openweathermap.org/img/w/${parsedForecastList.get(1).weather?.get(0)?.icon ?: "01d"}.png")
                     .into(icon2)
 
-                temp3.text = parsedForecastList.get(2).main?.temp.toString() + OpenWeatherApiService.getUnitSuffix()
+                temp3.text = OpenWeatherApiService.getCorrectTemp(parsedForecastList.get(2).main?.temp)?.format(2) + OpenWeatherApiService.getUnitSuffix()
                 desc3.text = parsedForecastList.get(2).weather?.get(0)?.description?.toUpperCase()
                 day3.text = OpenWeatherApiService.getWeekdayName(parsedForecastList.get(2).dt_txt.toString())
                 Glide.with(icon3)
                     .load("http://openweathermap.org/img/w/${parsedForecastList.get(2).weather?.get(0)?.icon ?: "01d"}.png")
                     .into(icon3)
 
-                temp4.text = parsedForecastList.get(3).main?.temp.toString() + OpenWeatherApiService.getUnitSuffix()
+                temp4.text = OpenWeatherApiService.getCorrectTemp(parsedForecastList.get(3).main?.temp)?.format(2) + OpenWeatherApiService.getUnitSuffix()
                 desc4.text = parsedForecastList.get(3).weather?.get(0)?.description?.toUpperCase()
                 day4.text = OpenWeatherApiService.getWeekdayName(parsedForecastList.get(3).dt_txt.toString())
                 Glide.with(icon4)
